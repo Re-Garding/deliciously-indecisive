@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+
+{% block body %} 
+<h1>Welcome to Deliciously Indecisive!</h1> 
+    <dev>
+        <h2>The site built for people who love to eat out, but hate to decide where to go.
+        </h2>
+    </dev>
+<dev id="login">
+    <form action="/login">
+        <button type="submit" >Login Here!</button>
+    </form>
+    <form action="/criteria">
+        <button type="submit" >Continue as Guest</button>
+    </form>
+</dev>
+{% endblock %}
