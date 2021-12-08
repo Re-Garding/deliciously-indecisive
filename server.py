@@ -1,12 +1,12 @@
 """Server for Hackbright Project"""
 
-from flask import Flask, render_template 
+from flask import Flask, render_template, request, flash
 import os, model, crud
-
+import requests
 
 
 app = Flask(__name__)
-
+app.secret_key = "mysecretkeyisSecret"
 YELP_KEY = os.environ['API_KEY']
 
 
@@ -33,9 +33,34 @@ def get_results():
     """search for local restaurants with parameters"""
 
     url = "https://api.yelp.com/v3/businesses/search"
-    auth = f'Authorization: Bearer {YELP_KEY}'
+    auth = {'Authorization': YELP_KEY}
+    payload = {'is_closed' : True}
+
+    search = request.args.get("search", '').lower()
+    location = request.args.get("location", '').lower()
+    radius = request.args.get("radius", '')
+    categories = request.args.getlist("categories", '')
+    sort = request.args.get("sort_by", '').lower()
+
+    if location:
+        payload['location'] = location
+    if search:
+        payload['search'] = search
+    if radius:
+        payload['radius'] = radius
+    if categories:
+        payload['categories'] = categories
+    if sort:
+        payload['sort_by'] = sort
     
-    return render_template("results-top.html", ) 
+
+    data = requests.get(url, params=payload, headers=auth).json()
+
+
+    if location and search:
+        return render_template("results-top.html", data=data)
+    else:
+         return render_template("criteria.html")
 
 
 if __name__ == "__main__":
