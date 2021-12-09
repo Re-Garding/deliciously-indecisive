@@ -42,41 +42,41 @@ def login_user():
     if user == True:
         correct_pass = crud.get_user_password(email, password)
         if correct_pass:
-            session['user_email'] = email
-            session['user_password'] = password
+            session['email'] = email
+            session['password'] = password
             
             flash("Login Successful")
             return redirect("/criteria")
         else:
             flash("Incorrect password")
-        return redirect("/")
+        return redirect("/login")
     else: 
         flash("No user with these credentials")
-        return redirect("/")
+        return redirect("/login")
 
-# @app.route("/loggedin", methods=['POST'])
-# def create_user():
-#     """create a new user"""
+@app.route("/createuser", methods=['POST'])
+def create_user():
+    """create a new user"""
     
-#     email = request.args.get("email", "")
-#     password = request.args.get("password", "")
-#     fname = request.args.get("fname", "")
-#     lname = request.args.get("lname", "")
-#     default_location = request.args.get("default_loc", "")
+    email = request.form.get("email", "").lower()
+    password = request.form.get("password", "")
+    fname = request.form.get("fname", "")
+    lname = request.form.get("lname", "")
+    default_location = request.form.get("default_loc", "")
 
-#     user = crud.get_user_email(email)
+    user = crud.verify_user_by_email(email)
 
-#     if user:
-#         flash('User Already Exists, please log in.')
-#     else:
-#         crud.create_user(email, password, fname, lname, default_location)
-#         session['user_email'] = email
-#         session['user_password'] = password
-#         session['user_fname'] = fname
-#         session['user_lname'] = lname
-#         session['default_location'] = default_location
-#         flash("Successfully Created Profile and Logged In")
-#         return redirect("/criteria")
+    if user:
+        flash('User Already Exists, please log in.')
+    else:
+        crud.create_user(email, password, fname, lname, default_location)
+        session['user_email'] = email
+        session['user_password'] = password
+        session['user_fname'] = fname
+        session['user_lname'] = lname
+        session['default_location'] = default_location
+        flash("Successfully Created Profile and Logged In")
+        return redirect("/criteria")
 
 
 
@@ -86,26 +86,28 @@ def get_results():
 
     url = "https://api.yelp.com/v3/businesses/search"
     auth = {'Authorization': YELP_KEY}
-    payload = {'is_closed' : False, 'radius' : '40,000'}
+    payload = {'is_closed' : False, 'radius' : '40000'}
 
     search = request.args.get("search", '')
     location = request.args.get("location", '')
     
     categories = request.args.getlist("categories", '')
     sort = request.args.get("sort_by", '')
-    default = crud.return_user_default_location(session['user_email'])
+    default = crud.return_user_default_location("beckygarding@gmail.com")
 
-    if session:
-        payload['location'] = default
-    else:
-        payload['location'] = location
+    
+
     if search:
         payload['term'] = search
     if categories:
         payload['categories'] = categories
     if sort:
         payload['sort_by'] = sort
-    
+
+    if session:
+        payload['location'] = default
+    else:
+        payload['location'] = location
 
     data = requests.get(url, params=payload, headers=auth).json()
     length = len(data.keys())

@@ -53,4 +53,3 @@ def return_user_default_location(email):
     u = User.query.filter(User.email==email).first()
 
     return u.default_location
-
