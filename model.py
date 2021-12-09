@@ -7,18 +7,18 @@ db = SQLAlchemy()
 class User(db.Model):
     """A User"""
 
-    __tablename__ = "users"
+    __tablename__ = 'users'
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(40), unique=True, nullable=False)
     password = db.Column(db.String(20),nullable=False)
     fname = db.Column(db.String(20), nullable=False)
     lname = db.Column(db.String(20), nullable=False)
-    default_locations = db.Column(db.String(100))
+    default_location = db.Column(db.String(100))
 
 
     def __repr__(self):
-        return f'<User user_id={self.user_id} email={self.email}'
+        return f'<User user_id={self.user_id} email={self.email}>'
 
 
 class Rating(db.Model):
@@ -33,9 +33,9 @@ class Rating(db.Model):
 
 
     def __repr__(self):
-        return f'<Rating rating_id={self.rating_id} score={self.rating}'
+        return f'<Rating rating_id={self.rating_id} score={self.rating}>'
 
-    movie = db.relationship('Movie', backref="rating")
+    restaurant = db.relationship('Restaurant', backref="rating")
     user = db.relationship('User', backref="rating")
 
 class Restaurant(db.Model):
@@ -51,5 +51,26 @@ class Restaurant(db.Model):
     phone =db.Column(db.String(15), nullable=False)
 
     def __repr__(self):
-        return f'(Restaurant ID={self.restaurant_id} name={self.name})'
+        return f'<Restaurant ID={self.restaurant_id} name={self.name}>'
 
+
+
+
+def connect_to_db(flask_app, db_uri="postgresql:///ratings", echo=True):
+    flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
+    flask_app.config["SQLALCHEMY_ECHO"] = echo
+    flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    db.app = flask_app
+    db.init_app(flask_app)
+
+    print("Connected to the db!")
+
+if __name__ == "__main__":
+    from server import app
+
+    # Call connect_to_db(app, echo=False) if your program output gets
+    # too annoying; this will tell SQLAlchemy not to print out every
+    # query it executes.
+
+    connect_to_db(app)

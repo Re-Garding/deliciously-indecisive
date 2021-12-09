@@ -2,8 +2,22 @@
 
 {% block body %}
 
+<h1> {{ (data['businesses'][0]['name']) }}</h1><br>
 
-<img src={{(data['businesses'][0]['image_url'])}}
+<a href="{{ (data['businesses'][0]['url']) }}">
+    <img id="main_pic" src={{ (data['businesses'][0]['image_url']) }}>
+</a>
+ <h2> DETAILS: </h2>
+ <p>
+    RATING: {{ (data['businesses'][0]['rating']) }} <br><br>
+    ADDRESS: {{ (data['businesses'][0]['location']['display_address']) }}<br><br>
+    Phone Number: {{ (data['businesses'][0]['display_phone']) }} <br><br>
+ </p>
 
+{% for i in range(19) %}
+<ul>{{data['businesses'][i]['name']}}</ul>
+{% endfor %}
+
+<script src="static/topfood.js"></script>
 
 {% endblock %}

@@ -1,5 +1,6 @@
 """Crud operations"""
-from model import db, User, Rating, Restaurant
+from model import db, User, Rating, Restaurant, connect_to_db
+
 
 
 def create_user(email, password, fname, lname, default_location):
@@ -31,3 +32,25 @@ def create_rating(restaurant, user, rating):
     db.session.add(rating)
     db.session.commit()
     return rate
+
+def get_user_password(email, password):
+    u = User.query.filter(User.email==email).first()
+
+    if u.password == password:
+        return True
+    else:
+        return False
+
+def verify_user_by_email(email):
+    u = User.query.filter(User.email==email).first()
+
+    if u:
+        return True
+    else:
+        return False
+
+def return_user_default_location(email):
+    u = User.query.filter(User.email==email).first()
+
+    return u.default_location
+
