@@ -4,8 +4,14 @@
     
     <title>{% block title %}Delicioulsy Indecisive{% endblock %}
     </title>
+    <ul>
+        {% for message in get_flashed_messages() %}
+          <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
 </head>
 <body>{% block body %} {% endblock %}
+  
 </body>
 
 

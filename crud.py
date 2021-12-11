@@ -33,7 +33,11 @@ def create_rating(restaurant, user, rating):
     db.session.commit()
     return rate
 
-def get_user_password(email, password):
+def verify_user_password(email, password):
+    """pulls user object from database by email
+        and compares to passed in password. If there
+        is a match it returns True"""
+        
     u = User.query.filter(User.email==email).first()
 
     if u.password == password:
@@ -42,6 +46,8 @@ def get_user_password(email, password):
         return False
 
 def verify_user_by_email(email):
+    """returns True if a user exists with the passed in email"""
+
     u = User.query.filter(User.email==email).first()
 
     if u:
@@ -50,6 +56,9 @@ def verify_user_by_email(email):
         return False
 
 def return_user_default_location(email):
+    """finds user by passed in email and 
+    returns said users default location"""
+
     u = User.query.filter(User.email==email).first()
 
     return u.default_location

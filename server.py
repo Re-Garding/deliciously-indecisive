@@ -1,6 +1,6 @@
 """Server for Hackbright Project"""
 
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from jinja2 import StrictUndefined
 import os, model, crud, requests
 
@@ -9,10 +9,15 @@ app.secret_key = "mysecretkeyisSecret"
 YELP_KEY = os.environ['API_KEY']
 app.jinja_env.undefined = StrictUndefined
 
+
+
+
 @app.route("/")
 def homepage():
     """render homepage"""
     return render_template("homepage.html")
+
+
 
 
 @app.route("/criteria")
@@ -20,15 +25,23 @@ def criteria():
     """ask for serach criteria"""
     return render_template("criteria.html")
 
+
+
+
 @app.route("/login")
 def login():
     """ask for login info"""
     return render_template("login.html")
 
+
+
+
 @app.route("/createuser")
 def create_user1():
     """create user and log them in"""
     return render_template("createuser.html")
+
+
 
 
 @app.route("/login", methods=["POST"])
@@ -38,9 +51,11 @@ def login_user():
     password = request.form.get("password", '')
 
     user = crud.verify_user_by_email(email)
+    #returns true or false
     
-    if user == True:
-        correct_pass = crud.get_user_password(email, password)
+    if user:
+        correct_pass = crud.verify_user_password(email, password)
+        #returns true or false 
         if correct_pass:
             session['email'] = email
             session['password'] = password
@@ -49,10 +64,14 @@ def login_user():
             return redirect("/criteria")
         else:
             flash("Incorrect password")
-        return redirect("/login")
+            return redirect("/login")
     else: 
         flash("No user with these credentials")
         return redirect("/login")
+
+
+
+
 
 @app.route("/createuser", methods=['POST'])
 def create_user():
@@ -60,8 +79,8 @@ def create_user():
     
     email = request.form.get("email", "").lower()
     password = request.form.get("password", "")
-    fname = request.form.get("fname", "")
-    lname = request.form.get("lname", "")
+    fname = request.form.get("fname", "").title()
+    lname = request.form.get("lname", "").title()
     default_location = request.form.get("default_loc", "")
 
     user = crud.verify_user_by_email(email)
@@ -80,42 +99,68 @@ def create_user():
 
 
 
-@app.route("/results-top")
+
+@app.route("/results-top", methods=['POST'])
 def get_results():
     """search for local restaurants with parameters"""
 
     url = "https://api.yelp.com/v3/businesses/search"
     auth = {'Authorization': YELP_KEY}
-    payload = {'is_closed' : False, 'radius' : '40000'}
+    payload = {'radius' : '40000', 'limit' : '30'}
 
-    search = request.args.get("search", '')
-    location = request.args.get("location", '')
-    
-    categories = request.args.getlist("categories", '')
-    sort = request.args.get("sort_by", '')
-    default = crud.return_user_default_location("beckygarding@gmail.com")
 
-    
+    search = request.json.get("term")
+    location = request.json.get("location")
+    sort = request.json.get("sort_by")
+    price = request.json.get("price")
+    open_now = request.json.get("open_now")
+    # default = crud.return_user_default_location("becky@gardings.com")
 
-    if search:
+    if search != '':
         payload['term'] = search
-    if categories:
-        payload['categories'] = categories
-    if sort:
+    if price != '':
+        payload['price'] = price
+    if sort != '':
         payload['sort_by'] = sort
-
-    if session:
-        payload['location'] = default
-    else:
+    if location != '':
         payload['location'] = location
-
+    # if session:
+    #     payload['location'] = default
+    payload['open_now'] = open_now
+    
     data = requests.get(url, params=payload, headers=auth).json()
-    length = len(data.keys())
+    data1 = {} 
+    data2 = {}   
+   
+    for num in range(0, 19):
+        array = {}
+        array['name'] = data['businesses'][num]['name']
+        array['image'] = data['businesses'][num]['image_url']
+        array['url'] = data['businesses'][num]['url']
+        array['rating'] = data['businesses'][num]['rating']
+        array['address'] = data['businesses'][num]['location']['display_address']
+        array['phone'] = data['businesses'][num]['display_phone']
+        array['distance'] = data['businesses'][num]['distance']
+        data1[num] = array
+    session['data'] = data1
 
-    if location == '':
-       return render_template("criteria.html")
-    else:
-        return render_template("results-top.html", data=data, length=length)
+    for num in range(20, 29):
+        array = {}
+        array['name'] = data['businesses'][num]['name']
+        array['image'] = data['businesses'][num]['image_url']
+        array['url'] = data['businesses'][num]['url']
+        array['rating'] = data['businesses'][num]['rating']
+        array['address'] = data['businesses'][num]['location']['display_address']
+        array['phone'] = data['businesses'][num]['display_phone']
+        array['distance'] = data['businesses'][num]['distance']
+        data1[num] = array
+    session['data2'] = data2
+    
+    return jsonify(data)
+
+@app.route("/tierone")
+def start_tier_one():
+    return render_template("results-top.html")
 
 
 if __name__ == "__main__":

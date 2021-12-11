@@ -7,9 +7,9 @@
     Welcome!
 </h1>
 <h2>Please enter what you'd like to search for, and include any additional criteria you'd like.</h2>
-
+<form action="/results-top">
 <div id="see">
-    <form action="/results-top">
+    
         <label>Search For:</label>
         <input type="text" name="search">
     
@@ -23,43 +23,18 @@
     
 </div>
 <br>
-<div id="rad">
-    
-        <label>Search Radius:</label>
-        <select name="radius">
-            <option value="40000">25 Miles</option>
-            <option value="32000">20 Miles</option>
-            <option value="24000">15 Miles</option>
-            <option value="16000">10 Miles</option>
-            <option value="8000">5 Miles</option>
-        </select>
-    
+<div>
+    <label>Price Range:</label><br>
+    <input type="checkbox" name="$">
+    <label>$</label>
+    <input type="checkbox" name="$$">
+    <label>$$</label>
+    <input type="checkbox" name="$$$">
+    <label>$$$</label>
+    <input type="checkbox" name="$$$$">
+    <label>$$$$</label>
 </div>
-<br>
-<div></div>
-<div id="cat">
-    
-        <label>Categories:</label>
-        <input type='checkbox' name='bakeries'>
-        <label>Bakeries</label>
-        <input type='checkbox' name='breweries'>
-        <label>Breweries</label>
-        <input type='checkbox' name='Coffee & Tea'>
-        <label>Coffee & Tea</label>
-        <input type='checkbox' name='delicatessen'>
-        <label>Delicatessen</label>
-        <input type='checkbox' name='desserts'>
-        <label>Desserts</label>
-        <input type='checkbox' name='food trucks'>
-        <label>Food Trucks</label>
-        <input type='checkbox' name='ice cream & frozen yogurt'>
-        <label>Ice Cream & Frozen Yogurt</label>
-        <input type='checkbox' name='juice bars and smoothies'>
-        <label>Juice Bars and Smoothies</label>
-        <input type='checkbox' name='smokehouse'>
-        <label>Smokehouse</label>
-    
-</div>
+
 <br>
 <div>
     Sort Results By:
@@ -69,10 +44,20 @@
             <option value="review">Reviews</option>
             
         </select>
-    
 </div>
 <br>
 <div>
-    <input type="submit" name="search_now"></form>
+    <label>Open Now:</label>
+    <select name="open">
+        <option value="True">Open</option>
+        <option value="False">Closed</option>
+    </select>  
 </div>
+<br>
+
+
+<div>
+    <input type="submit" id="search_now">
+</div></form>
+<script src="static/food.js"></script>
 {% endblock %}
