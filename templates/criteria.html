@@ -3,11 +3,14 @@
 {% block title %}Query Info{% endblock %}
 
 {% block body %}
+
+
+<div id='base'>
 <h1>
     Welcome!
 </h1>
 <h2>Please enter what you'd like to search for, and include any additional criteria you'd like.</h2>
-<form action="/results-top">
+<form >
 <div id="see">
     
         <label>Search For:</label>
@@ -59,5 +62,8 @@
 <div>
     <input type="submit" id="search_now">
 </div></form>
-<script src="static/food.js"></script>
+
+</div>
+<!-- <script src="static/food.js"></script> -->
+<script src="static/tier1.jsx" type="text/jsx"></script>
 {% endblock %}

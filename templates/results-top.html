@@ -1,16 +1,31 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<div id='base1'></div>
+
+
 <div id='base'></div>
 
-{{ session['data']['0']['name'] }}
+
+<!-- <h1>{{ session['data']['0']['name'] }}</h1>
+<img src={{session['data']['0']['image']}}> 
+
+
+
+
 
 
 
  <h2> DETAILS: </h2>
-
-
+ <h3>
+     <ul id='one'> Address: {{ session['data']['0']['address'] }}</ul>
+    <ul id='two'> Phone: {{ session['data']['0']['phone'] }}</ul>
+    <ul id='three'> Rating: {{ session['data']['0']['rating'] }}</ul> -->
+<!-- 
+ </h3>
+ <div id='base'>
+     <button type="submit" id="yes">Sounds Great!</button>
+     <button type="submit" id="no">Not in the Mood</button>
+ </div> -->
 
 
 <script src="static/tier1.js"></script>

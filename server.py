@@ -129,38 +129,39 @@ def get_results():
     payload['open_now'] = open_now
     
     data = requests.get(url, params=payload, headers=auth).json()
-    data1 = {} 
-    data2 = {}   
+    # print(data)
+    # data1 = {} 
+    # data2 = {}   
    
-    for num in range(0, 19):
-        array = {}
-        array['name'] = data['businesses'][num]['name']
-        array['image'] = data['businesses'][num]['image_url']
-        array['url'] = data['businesses'][num]['url']
-        array['rating'] = data['businesses'][num]['rating']
-        array['address'] = data['businesses'][num]['location']['display_address']
-        array['phone'] = data['businesses'][num]['display_phone']
-        array['distance'] = data['businesses'][num]['distance']
-        data1[num] = array
-    session['data'] = data1
+    # for num in range(0, 19):
+    #     array = {}
+    #     array['name'] = data['businesses'][num]['name']
+    #     array['image'] = data['businesses'][num]['image_url']
+    #     array['url'] = data['businesses'][num]['url']
+    #     array['rating'] = data['businesses'][num]['rating']
+    #     array['address'] = data['businesses'][num]['location']['display_address']
+    #     array['phone'] = data['businesses'][num]['display_phone']
+    #     array['distance'] = data['businesses'][num]['distance']
+    #     data1[num] = array
+    # session['data'] = data1
 
-    for num in range(20, 29):
-        array = {}
-        array['name'] = data['businesses'][num]['name']
-        array['image'] = data['businesses'][num]['image_url']
-        array['url'] = data['businesses'][num]['url']
-        array['rating'] = data['businesses'][num]['rating']
-        array['address'] = data['businesses'][num]['location']['display_address']
-        array['phone'] = data['businesses'][num]['display_phone']
-        array['distance'] = data['businesses'][num]['distance']
-        data1[num] = array
-    session['data2'] = data2
+    # for num in range(20, 29):
+    #     array = {}
+    #     array['name'] = data['businesses'][num]['name']
+    #     array['image'] = data['businesses'][num]['image_url']
+    #     array['url'] = data['businesses'][num]['url']
+    #     array['rating'] = data['businesses'][num]['rating']
+    #     array['address'] = data['businesses'][num]['location']['display_address']
+    #     array['phone'] = data['businesses'][num]['display_phone']
+    #     array['distance'] = data['businesses'][num]['distance']
+    #     data1[num] = array
+    # session['data2'] = data2
     
     return jsonify(data)
 
-@app.route("/tierone")
-def start_tier_one():
-    return render_template("results-top.html")
+# @app.route("/tierone")
+# def start_tier_one():
+#     return render_template("results-top.html")
 
 
 if __name__ == "__main__":
