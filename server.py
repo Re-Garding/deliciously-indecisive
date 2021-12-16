@@ -59,8 +59,8 @@ def login_user():
         if correct_pass:
             session['email'] = email
             session['password'] = password
-            
-            flash("Login Successful")
+            session['default_location'] = crud.return_user_default_location(email)
+            session['fname'] = crud.return_user_fname(email)
             return redirect("/criteria")
         else:
             flash("Incorrect password")
@@ -106,15 +106,16 @@ def get_results():
 
     url = "https://api.yelp.com/v3/businesses/search"
     auth = {'Authorization': YELP_KEY}
-    payload = {'radius' : '40000', 'limit' : '30'}
+    payload = {'radius' : '40000', 'limit' : '50'}
 
-
+    
     search = request.json.get("term")
     location = request.json.get("location")
     sort = request.json.get("sort_by")
     price = request.json.get("price")
     open_now = request.json.get("open_now")
-    # default = crud.return_user_default_location("becky@gardings.com")
+    
+    
 
     if search != '':
         payload['term'] = search
@@ -122,40 +123,17 @@ def get_results():
         payload['price'] = price
     if sort != '':
         payload['sort_by'] = sort
+    payload['open_now'] = open_now
     if location != '':
         payload['location'] = location
-    # if session:
-    #     payload['location'] = default
-    payload['open_now'] = open_now
+
+    if session:
+        email = session['email']    
+        default = crud.return_user_default_location(email)
+        payload['location'] = default
     
     data = requests.get(url, params=payload, headers=auth).json()
-    # print(data)
-    # data1 = {} 
-    # data2 = {}   
-   
-    # for num in range(0, 19):
-    #     array = {}
-    #     array['name'] = data['businesses'][num]['name']
-    #     array['image'] = data['businesses'][num]['image_url']
-    #     array['url'] = data['businesses'][num]['url']
-    #     array['rating'] = data['businesses'][num]['rating']
-    #     array['address'] = data['businesses'][num]['location']['display_address']
-    #     array['phone'] = data['businesses'][num]['display_phone']
-    #     array['distance'] = data['businesses'][num]['distance']
-    #     data1[num] = array
-    # session['data'] = data1
-
-    # for num in range(20, 29):
-    #     array = {}
-    #     array['name'] = data['businesses'][num]['name']
-    #     array['image'] = data['businesses'][num]['image_url']
-    #     array['url'] = data['businesses'][num]['url']
-    #     array['rating'] = data['businesses'][num]['rating']
-    #     array['address'] = data['businesses'][num]['location']['display_address']
-    #     array['phone'] = data['businesses'][num]['display_phone']
-    #     array['distance'] = data['businesses'][num]['distance']
-    #     data1[num] = array
-    # session['data2'] = data2
+    
     
     return jsonify(data)
 

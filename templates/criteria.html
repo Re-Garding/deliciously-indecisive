@@ -6,6 +6,9 @@
 
 
 <div id='base'>
+{% if session %}
+Welcome, {{session['fname']}}
+{% endif %}
 <h1>
     Welcome!
 </h1>

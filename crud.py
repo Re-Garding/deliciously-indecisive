@@ -62,3 +62,11 @@ def return_user_default_location(email):
     u = User.query.filter(User.email==email).first()
 
     return u.default_location
+
+def return_user_fname(email):
+    """finds user name by passed in email and 
+    returns said user first name"""
+
+    u = User.query.filter(User.email==email).first()
+
+    return u.fname
