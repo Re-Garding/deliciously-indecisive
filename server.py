@@ -4,6 +4,9 @@ from flask import Flask, render_template, request, flash, redirect, session, jso
 from jinja2 import StrictUndefined
 import os, model, crud, requests
 
+
+
+
 app = Flask(__name__)
 app.secret_key = "mysecretkeyisSecret"
 YELP_KEY = os.environ['API_KEY']
@@ -106,7 +109,7 @@ def get_results():
 
     url = "https://api.yelp.com/v3/businesses/search"
     auth = {'Authorization': YELP_KEY}
-    payload = {'radius' : '40000', 'limit' : '50'}
+    payload = {'radius' : '40000', 'limit' : '30'}
 
     
     search = request.json.get("term")
@@ -133,13 +136,10 @@ def get_results():
         payload['location'] = default
     
     data = requests.get(url, params=payload, headers=auth).json()
-    
-    
+
     return jsonify(data)
 
-# @app.route("/tierone")
-# def start_tier_one():
-#     return render_template("results-top.html")
+
 
 
 if __name__ == "__main__":
