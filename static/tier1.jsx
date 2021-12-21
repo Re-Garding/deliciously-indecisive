@@ -77,7 +77,7 @@ function DisplayFood(responseJson) {
 const [yesCount, setyesCount] = React.useState(0);
 const [noCount, setnoCount] = React.useState(0);
 const [likes, setlikes] = React.useState(QUERY_NUM - 1);
-let [last, setlast] = React.useState(0);
+let [round, setround] = React.useState(1);
 const tier1Count = yesCount + noCount;
 
 const [tier, settier] = React.useState(responseJson['response']['businesses']); 
@@ -87,34 +87,30 @@ let dist1 = (distance).toFixed(2);
 
 
 const wrapClickYes = () => {
-    console.log(likes);
-    // setlast(last => last = 0);
+    // console.log(likes);
     setyesCount(yesCount => yesCount + 1);
     tier[yesCount] = tier[tier1Count];
     
     if (yesCount != tier1Count) 
     {delete tier[tier1Count];
     }
-    console.log(tier);
-    console.log(tier1Count);
+    // console.log(tier);
+    // console.log(tier1Count);
     if (tier1Count == likes) {
         setToZero();
-        console.log('set to zero');
+        // console.log('set to zero');
     }
 }
 const wrapClickNo = () => {
-    console.log(likes);
-    // setlast(last => (last = likes - 1));
-    // console.log(last);
     setnoCount(noCount => noCount + 1);
     delete tier[tier1Count];
-    console.log(tier);
-    console.log(tier1Count);
-    console.log(likes);
-    console.log(Object.keys(tier).length);
+    // console.log(tier);
+    // console.log(tier1Count);
+
+    // console.log(Object.keys(tier).length);
     if (tier1Count == likes) {
         setToZero();
-        console.log('set to zero');
+        // console.log('set to zero');
     }
 
 
@@ -124,21 +120,11 @@ const setToZero = () => {
     setlikes(likes => Object.keys(tier).length-1);
     setyesCount(yesCount => yesCount - yesCount);
     setnoCount(noCount => noCount - noCount);
+    setround(round => round + 1);
 }
-
-// const setLast = () => {
-//     last = likes-1;
-//     setlast(last);
-//     console.log(last);
-// }
-
-
-
-
 
 
 if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {  
-    console.log('undefined')
     return (
         <React.Fragment>
         <div>
@@ -175,7 +161,8 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
             <React.Fragment>
                 
             <div>
-                <h1>{tier[tier1Count]['name']}</h1>
+                <h1> Round {round} - option {tier1Count + 1} of {likes+1}</h1>
+                <h2>{tier[tier1Count]['name']}</h2>
                 
                 <p>
                     {tier[tier1Count]['location']['address1'] }<br></br>
