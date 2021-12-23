@@ -135,10 +135,36 @@ const postReview = (evt) => {
         }
     }
         ).then(response => response.json()) .then(responseData => {
-        document.querySelector('#rate').innerHTML = responseData
+         responseData
     });
+    document.querySelector('#rate').innerHTML = "Successfully Rated";
         
 }
+
+
+
+let session = "";
+if (document.querySelector('#session') == undefined) {
+    session = '';
+} else {session = (
+    <div id="rate">
+        <h3>Have you been here before? Would you like to rate it?</h3>
+            <form>
+                <select name='rate'>
+                    <option value="1">1 Star</option>
+                    <option value="1.5">1.5 Star</option>
+                    <option value="2">2 Star</option>
+                    <option value="2.5">2.5 Star</option>
+                    <option value="3">3 Star</option>
+                    <option value="3.5">3.5 Star</option>
+                    <option value="4">4 Star</option>
+                    <option value="4.5">4.5 Star</option>
+                    <option value="5">5 Star</option>
+                </select>
+            <button type="submit" onClick={postReview}>Leave Rating</button>
+        </form>
+    </div>
+);}
 
 if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {  
     return (
@@ -201,25 +227,7 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
             <button type="button" onClick={wrapClickNo}> 
                     Not in the Mood </button>
             
-            <div id="rate">
-                {/* {% if session %} */}
-                <h3>Have you been here before? Would you like to rate it?</h3>
-                <form>
-                    <select name='rate'>
-                        <option value="1">1 Star</option>
-                        <option value="1.5">1.5 Star</option>
-                        <option value="2">2 Star</option>
-                        <option value="2.5">2.5 Star</option>
-                        <option value="3">3 Star</option>
-                        <option value="3.5">3.5 Star</option>
-                        <option value="4">4 Star</option>
-                        <option value="4.5">4.5 Star</option>
-                        <option value="5">5 Star</option>
-                    </select>
-                    <button type="submit" onClick={postReview}>Leave Rating</button>
-                </form>
-                {/* {% endif %} */}
-            </div>
+            {session}
             </React.Fragment>);
 };
 }

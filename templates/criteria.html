@@ -4,11 +4,16 @@
 
 {% block body %}
 
+{% if session %}
+<input type="hidden" id="session" name="True"> 
+{% endif %}
 
 <div id='base'>
-{% if session %}
-Welcome, {{session['fname']}}
-{% endif %}
+    {% if session %}
+    <p id="jinja">
+        Welcome, {{session['fname']}}
+    </p>
+    {% endif %}
 <h1>
     Welcome!
 </h1>
