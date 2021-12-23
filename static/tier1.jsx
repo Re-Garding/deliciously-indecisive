@@ -82,7 +82,7 @@ const tier1Count = yesCount + noCount;
 const [tier, settier] = React.useState(responseJson['response']['businesses']); 
 let distance = ((tier[tier1Count]['distance'])/1609);
 let dist1 = (distance).toFixed(2);
-
+console.log(tier[likes]);
 
 const wrapClickYes = () => {
     // console.log(likes);
@@ -135,7 +135,7 @@ const postReview = (evt) => {
         }
     }
         ).then(response => response.json()) .then(responseData => {
-         responseData
+            document.querySelector('#rate').innerHTML = `${responseData}`
     });
     document.querySelector('#rate').innerHTML = "Successfully Rated";
         
@@ -172,6 +172,8 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
         <div>
             <h2>You'll be dining at:</h2>
             <h1>{tier[likes]['name']}</h1>
+            <img src={`static/Imgs/${tier[likes]['rating']}.png`}></img>
+            {tier[likes]['review_count']} total reviews
             <img src={tier[likes]['image_url']} height="350"></img>
         </div>
         
@@ -194,6 +196,8 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
             <br></br>
                 <br></br>
                 </p>
+            <img src={`static/Imgs/${tier['0']['rating']}.png`}></img>
+            {tier['0']['review_count']} total reviews
             <img src={tier['0']['image_url']} height="350"></img>
         </div>
         
@@ -210,13 +214,20 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
                 
             <div>
                 <h1> Round {round}</h1>
-                <h2>Option {tier1Count + 1} of {likes+1}</h2>
-                <h1>{tier[tier1Count]['name']}</h1>
+                    <h2>
+                        Option {tier1Count + 1} of {likes+1}
+                    </h2>
+                    <h1>
+                        {tier[tier1Count]['name']}
+                    </h1>
+                    <img src={`static/Imgs/${tier[tier1Count]['rating']}.png`}></img>
+                        <br></br>
+                    {tier[tier1Count]['review_count']} total reviews
                 
                 <p>
                     {tier[tier1Count]['location']['address1'] }<br></br>
                     {tier[tier1Count]['location']['city'] }<br></br>
-                <br></br>
+                    <br></br>
                     {dist1} miles away<br></br>
                 </p>
                 <img src={tier[tier1Count]['image_url']} height="350"></img>

@@ -167,13 +167,13 @@ def post_rating():
         rated = crud.check_for_rating(rest.restaurant_id, user_id)
         if rated == False:
             crud.create_rating(rest.restaurant_id, user_id, rating)
-        else:
+        elif rated == True:
             return "Already Rated"
     else:
         restaurant = crud.create_restaurant(name, address, image, url, phone)
         crud.create_rating(restaurant.restaurant_id, user_id, rating)
         
-    return "successfully rated"
+    return "Successfully Rated"
 
 
 
