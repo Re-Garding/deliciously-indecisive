@@ -3,11 +3,10 @@
 const QUERY_NUM = 30;
 
 document.querySelector("#search_now").addEventListener('click', evt => {
-    if (document.querySelector('[name="location"]').value =='') {
-        evt.preventDefault();
-        window.location.href='/criteria'
-        
-    }
+    // if (document.querySelector('[name="location"]').value =='') {
+    //     evt.preventDefault();
+    //     window.location.href='/criteria'        
+    // }
     evt.preventDefault();
     const payload = {'radius' : '40000', 'categories' : 'restaurant', 'limit' : `${QUERY_NUM}`};
     const search = document.querySelector('[name="search"]').value;
@@ -85,7 +84,6 @@ let distance = ((tier[tier1Count]['distance'])/1609);
 let dist1 = (distance).toFixed(2);
 
 
-
 const wrapClickYes = () => {
     // console.log(likes);
     setyesCount(yesCount => yesCount + 1);
@@ -123,6 +121,24 @@ const setToZero = () => {
     setround(round => round + 1);
 }
 
+const postReview = (evt) => {
+    evt.preventDefault();
+    const data = tier[tier1Count];
+    const rate = document.querySelector('[name="rate"]').value;
+    data['rating'] = rate;
+
+    fetch('/add-rating', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+        ).then(response => response.json()) .then(responseData => {
+        document.querySelector('#rate').innerHTML = responseData
+    });
+        
+}
 
 if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {  
     return (
@@ -130,7 +146,7 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
         <div>
             <h2>You'll be dining at:</h2>
             <h1>{tier[likes]['name']}</h1>
-            <img src={tier[likes]['image_url']}></img>
+            <img src={tier[likes]['image_url']} height="350"></img>
         </div>
         
         <button type="button" onClick={ () => location.href=`${tier[likes]['url']}`}> 
@@ -146,7 +162,13 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
         <div>
             <h2>You'll be dining at:</h2>
             <h1>{tier['0']['name']}</h1>
-            <img src={tier['0']['image_url']}></img>
+            <p>
+                {tier['0']['location']['address1'] }<br></br>
+                {tier['0']['location']['city'] }<br></br>
+            <br></br>
+                <br></br>
+                </p>
+            <img src={tier['0']['image_url']} height="350"></img>
         </div>
         
         <button type="button" onClick={ () => location.href=`${tier['0']['url']}`}> 
@@ -161,8 +183,9 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
             <React.Fragment>
                 
             <div>
-                <h1> Round {round} - option {tier1Count + 1} of {likes+1}</h1>
-                <h2>{tier[tier1Count]['name']}</h2>
+                <h1> Round {round}</h1>
+                <h2>Option {tier1Count + 1} of {likes+1}</h2>
+                <h1>{tier[tier1Count]['name']}</h1>
                 
                 <p>
                     {tier[tier1Count]['location']['address1'] }<br></br>
@@ -170,23 +193,37 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
                 <br></br>
                     {dist1} miles away<br></br>
                 </p>
-                <img src={tier[tier1Count]['image_url']}></img>
+                <img src={tier[tier1Count]['image_url']} height="350"></img>
             </div>
             
-            <button type="button" action="/tier2" onClick={wrapClickYes}> 
+            <button type="button" onClick={wrapClickYes}> 
                     Sounds Great! </button>
-            <button type="button" action="/tier2" onClick={wrapClickNo}> 
+            <button type="button" onClick={wrapClickNo}> 
                     Not in the Mood </button>
+            
+            <div id="rate">
+                {/* {% if session %} */}
+                <h3>Have you been here before? Would you like to rate it?</h3>
+                <form>
+                    <select name='rate'>
+                        <option value="1">1 Star</option>
+                        <option value="1.5">1.5 Star</option>
+                        <option value="2">2 Star</option>
+                        <option value="2.5">2.5 Star</option>
+                        <option value="3">3 Star</option>
+                        <option value="3.5">3.5 Star</option>
+                        <option value="4">4 Star</option>
+                        <option value="4.5">4.5 Star</option>
+                        <option value="5">5 Star</option>
+                    </select>
+                    <button type="submit" onClick={postReview}>Leave Rating</button>
+                </form>
+                {/* {% endif %} */}
+            </div>
             </React.Fragment>);
 };
-
-          
-
-
 }
 
-// const [yesCount2, setyesCount2] = React.useState(0);
-// const [noCount2, setnoCount2] = React.useState(0);
-// const tier2Count = yesCount2 + noCount2;
-// let distance2 = ((item[yesCount2]['distance'])/1609);
-// let dist2 = (distance2).toFixed(2);
+
+
+

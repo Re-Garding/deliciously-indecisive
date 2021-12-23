@@ -8,7 +8,7 @@ import os, model, crud, requests
 
 
 app = Flask(__name__)
-app.secret_key = "mysecretkeyisSecret"
+app.secret_key = os.environ['SECRET_KEY']
 YELP_KEY = os.environ['API_KEY']
 app.jinja_env.undefined = StrictUndefined
 
@@ -92,10 +92,10 @@ def create_user():
         flash('User Already Exists, please log in.')
     else:
         crud.create_user(email, password, fname, lname, default_location)
-        session['user_email'] = email
-        session['user_password'] = password
-        session['user_fname'] = fname
-        session['user_lname'] = lname
+        session['email'] = email
+        session['password'] = password
+        session['fname'] = fname
+        session['lname'] = lname
         session['default_location'] = default_location
         flash("Successfully Created Profile and Logged In")
         return redirect("/criteria")
@@ -131,13 +131,51 @@ def get_results():
         payload['location'] = location
 
     if session:
-        email = session['email']    
+        email = session['email']
         default = crud.return_user_default_location(email)
         payload['location'] = default
-    
+    elif location == None:
+        flash("Please enter a location")
+        return redirect("/criteria")
+
     data = requests.get(url, params=payload, headers=auth).json()
 
+    
     return jsonify(data)
+
+
+@app.route("/add-rating", methods=['POST'])
+def post_rating():
+    """verify restaurant in database, if not present, add it 
+    and log a rating for the logged in user"""
+
+    user_email = session['email']
+    user = crud.return_user(user_email)
+    user_id = user.user_id
+
+    name = request.json.get('name')
+    phone = request.json.get('display_phone')
+    location = request.json.get('location')
+    address = location['address1']
+    image = request.json.get('image_url')
+    url = request.json.get('url')
+    rating = float(request.json.get('rating'))
+
+    rest = crud.return_rest(name, phone)
+
+    rated = crud.check_for_rating(restaurant_id, user_id)
+
+    if rest:
+        rated = crud.check_for_rating(rest.restaurant_id, user_id)
+        if rated == False:
+            crud.create_rating(rest.restaurant_id, user_id, rating)
+        else:
+            return print("Already Rated")
+    else:
+        restaurant = crud.create_restaurant(name, address, image, url, phone)
+        crud.create_rating(restaurant.restaurant_id, user_id, rating)
+        
+    return "successfully rated"
 
 
 
