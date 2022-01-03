@@ -52,8 +52,8 @@
         <select name="sort_by">
             <option value="best_match">Best Match</option>
             <option value="rating">Ratings</option>
-            <option value="review">Reviews</option>
-            
+            <option value="review_count">Review Count</option>
+            <option value="distance">Distance</option>
         </select>
 </div>
 <br>
@@ -66,12 +66,18 @@
 </div>
 <br>
 
-
+{% if session %}
+<div>
+    <input type='checkbox' name='database'>
+    <label>Choose only from previously rated restaurants</label>
+</div>
+{% endif %}
 <div>
     <input type="submit" id="search_now">
 </div></form>
 
 </div>
+<div id="response"></div>
 <div id="rate">
 </div>
 <!-- <script src="static/food.js"></script> -->

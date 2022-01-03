@@ -72,7 +72,7 @@ document.querySelector("#search_now").addEventListener('click', evt => {
 
 function DisplayFood(responseJson) {
 
-
+console.log(responseJson);
 const [yesCount, setyesCount] = React.useState(0);
 const [noCount, setnoCount] = React.useState(0);
 const [likes, setlikes] = React.useState(QUERY_NUM - 1);
@@ -82,12 +82,14 @@ const tier1Count = yesCount + noCount;
 const [tier, settier] = React.useState(responseJson['response']['businesses']); 
 let distance = ((tier[tier1Count]['distance'])/1609);
 let dist1 = (distance).toFixed(2);
-console.log(tier[likes]);
+
 
 const wrapClickYes = () => {
     // console.log(likes);
     setyesCount(yesCount => yesCount + 1);
     tier[yesCount] = tier[tier1Count];
+    document.querySelector('#response').innerHTML = "";
+
     
     if (yesCount != tier1Count) 
     {delete tier[tier1Count];
@@ -102,6 +104,7 @@ const wrapClickYes = () => {
 const wrapClickNo = () => {
     setnoCount(noCount => noCount + 1);
     delete tier[tier1Count];
+    document.querySelector('#response').innerHTML = "";
     // console.log(tier);
     // console.log(tier1Count);
 
@@ -121,6 +124,10 @@ const setToZero = () => {
     setround(round => round + 1);
 }
 
+
+
+
+
 const postReview = (evt) => {
     evt.preventDefault();
     const data = tier[tier1Count];
@@ -134,21 +141,52 @@ const postReview = (evt) => {
             'Content-Type': 'application/json',
         }
     }
-        ).then(response => response.json()) .then(responseData => {
-            document.querySelector('#rate').innerHTML = `${responseData}`
+        ).then(response => response.text()) .then(responseText => {
+            const data = responseText;
+            document.querySelector('#response').innerHTML = (
+                
+                responseText
+
+            );
     });
-    document.querySelector('#rate').innerHTML = "Successfully Rated";
+
         
 }
 
+const overwriteReview = (evt) => {
+    evt.preventDefault();
+    const data = tier[tier1Count];
+    const rate = document.querySelector('[name="rate"]').value;
+    data['rating'] = rate;
 
+    fetch('/overwrite-rating', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+        ).then(response => response.text()) .then(responseText => {
+            const newData = responseText;
+            console.log(responseText);
+            document.querySelector('#response').innerHTML = (
+                
+                responseText
 
-let session = "";
+            );
+    });
+
+        
+}
+
+let session = '';
+
 if (document.querySelector('#session') == undefined) {
     session = '';
-} else {session = (
+} else {
+    session = (
     <div id="rate">
-        <h3>Have you been here before? Would you like to rate it?</h3>
+        <h3>Have you been here before? Would you like to rate this restaurant?</h3>
             <form>
                 <select name='rate'>
                     <option value="1">1 Star</option>
@@ -162,9 +200,17 @@ if (document.querySelector('#session') == undefined) {
                     <option value="5">5 Star</option>
                 </select>
             <button type="submit" onClick={postReview}>Leave Rating</button>
+            <button type="submit" onClick={overwriteReview}>Overwrite Review</button>
         </form>
     </div>
 );}
+
+
+
+
+
+
+// logic to determine page render below
 
 if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {  
     return (
@@ -173,7 +219,7 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
             <h2>You'll be dining at:</h2>
             <h1>{tier[likes]['name']}</h1>
             <img src={`static/Imgs/${tier[likes]['rating']}.png`}></img>
-            {tier[likes]['review_count']} total reviews
+            {tier[likes]['review_count']} total reviews<br></br>
             <img src={tier[likes]['image_url']} height="350"></img>
         </div>
         
@@ -229,8 +275,10 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
                     {tier[tier1Count]['location']['city'] }<br></br>
                     <br></br>
                     {dist1} miles away<br></br>
-                </p>
-                <img src={tier[tier1Count]['image_url']} height="350"></img>
+                </p> 
+                <a href={tier[tier1Count]['url']} target="_blank">
+                    <img src={tier[tier1Count]['image_url']} height="350"></img>
+                </a>
             </div>
             
             <button type="button" onClick={wrapClickYes}> 

@@ -101,3 +101,11 @@ def check_for_rating(restaurant_id, user_id):
         return True
     else:
         return False
+
+
+def delete_rating(user_id, restaurant_id):
+
+    Rating.query.filter(Rating.user_id==user_id, Rating.restaurant_id==restaurant_id).delete()
+
+    db.session.commit()
+    return "Deleted"

@@ -140,7 +140,6 @@ def get_results():
 
     data = requests.get(url, params=payload, headers=auth).json()
 
-    
     return jsonify(data)
 
 
@@ -168,14 +167,44 @@ def post_rating():
         if rated == False:
             crud.create_rating(rest.restaurant_id, user_id, rating)
         elif rated == True:
-            return "Already Rated"
+            return "You have already rated this location"
     else:
         restaurant = crud.create_restaurant(name, address, image, url, phone)
         crud.create_rating(restaurant.restaurant_id, user_id, rating)
         
     return "Successfully Rated"
 
+@app.route("/overwrite-rating", methods=['POST'])
+def overwrite_rating():
+    """will add new rating or overwrite prevous rating"""
 
+    user_email = session['email']
+    user = crud.return_user(user_email)
+    user_id = user.user_id
+
+    name = request.json.get('name')
+    phone = request.json.get('display_phone')
+    location = request.json.get('location')
+    address = location['address1']
+    image = request.json.get('image_url')
+    url = request.json.get('url')
+    rating = float(request.json.get('rating'))
+
+    rest = crud.return_rest(name, phone)
+
+    if rest:
+        rate = crud.check_for_rating(rest.restaurant_id, user_id)
+        if rate == False:
+            crud.create_rating(rest.restaurant_id, user_id, rating)
+        elif rate == True:
+            crud.delete_rating(user_id, rest.restaurant_id)
+            crud.create_rating(rest.restaurant_id, user_id, rating)
+            return "Your previous rating has been sucessfully overwritten"
+    else:
+        restaurant = crud.create_restaurant(name, address, image, url, phone)
+        crud.create_rating(restaurant.restaurant_id, user_id, rating)
+        
+    return "Successfully Rated"
 
 
 if __name__ == "__main__":
