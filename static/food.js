@@ -10,6 +10,7 @@ button1.addEventListener('click', evt => {
     const sort = document.querySelector('[name="sort_by"]').value;
     const allPrice = [];
     const open = document.querySelector('[name="open"]').value;
+    const database = document.querySelector('#database').ariaChecked;
 
     if (document.querySelector('[name="$"]').value === 'on') {
         allPrice.push('1')
@@ -42,6 +43,8 @@ button1.addEventListener('click', evt => {
     if (allPrice !== '') {
         payload.price = allPrice
     }
+
+    payload.database = database;
 
     const querystr = new URLSearchParams(payload).toString(); 
     // const url = `/results-top?${querystr}`;

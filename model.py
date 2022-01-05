@@ -30,6 +30,9 @@ class Rating(db.Model):
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     rating = db.Column(db.Float, nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    search_location = db.Column(db.String(100), nullable=False)
+    distance = db.Column(db.Float(10), nullable=False)
 
 
     def __repr__(self):
@@ -48,7 +51,8 @@ class Restaurant(db.Model):
     address = db.Column(db.String(200), nullable=False)
     img_url = db.Column(db.String(200), nullable=False)
     url = db.Column(db.String(200), nullable=False)
-    phone =db.Column(db.String(15), nullable=False)
+    phone = db.Column(db.String(15), nullable=False)
+    city = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
         return f'<Restaurant ID={self.restaurant_id} name={self.name}>'

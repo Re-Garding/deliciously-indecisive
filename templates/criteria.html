@@ -9,6 +9,7 @@
 {% endif %}
 
 <div id='base'>
+<div id='flash'></div>
     {% if session %}
     <p id="jinja">
         Welcome, {{session['fname']}}
@@ -68,7 +69,7 @@
 
 {% if session %}
 <div>
-    <input type='checkbox' name='database'>
+    <input type='checkbox' name='database' id="database">
     <label>Choose only from previously rated restaurants</label>
 </div>
 {% endif %}

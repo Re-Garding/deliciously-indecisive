@@ -8,6 +8,7 @@
         <h2>The site built for people who love to eat out, but hate to decide where to go.
         </h2>
     </dev>
+    {% if not session %}
 <dev id="login">
     <form action="/login">
         <button type="submit" >Login Here!</button>
@@ -19,4 +20,18 @@
         <button type="submit" >Continue as Guest</button>
     </form>
 </dev>
+{% endif %}
+
+
+{% if session %}
+<dev id="login">
+    <form action="/login">
+        <button type="submit" >Change Profiles</button>
+    </form>
+    <form action="/criteria">
+        <button type="submit" >Continue to Search</button>
+    </form>
+</dev>
+{% endif %}
+
 {% endblock %}

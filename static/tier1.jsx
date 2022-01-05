@@ -3,10 +3,10 @@
 const QUERY_NUM = 30;
 
 document.querySelector("#search_now").addEventListener('click', evt => {
-    // if (document.querySelector('[name="location"]').value =='') {
-    //     evt.preventDefault();
-    //     window.location.href='/criteria'        
-    // }
+    if (document.querySelector('[name="location"]').value == '' && document.querySelector('#session') == null) {
+        evt.preventDefault();
+        window.location.href='/criteria'
+        }
     evt.preventDefault();
     const payload = {'radius' : '40000', 'categories' : 'restaurant', 'limit' : `${QUERY_NUM}`};
     const search = document.querySelector('[name="search"]').value;
@@ -14,38 +14,45 @@ document.querySelector("#search_now").addEventListener('click', evt => {
     const sort = document.querySelector('[name="sort_by"]').value;
     const allPrice = [];
     const open = document.querySelector('[name="open"]').value;
+    
 
-    if (document.querySelector('[name="$"]').value === 'on') {
+    if (document.querySelector('[name="$"]').checked === 'true') {
         allPrice.push('1')
     }
-    if (document.querySelector('[name="$$"]').value === 'on') {
+    if (document.querySelector('[name="$$"]').checked === 'true') {
         allPrice.push('2')
     }
-    if (document.querySelector('[name="$$$"]').value === 'on') {
+    if (document.querySelector('[name="$$$"]').checked === 'true') {
         allPrice.push('3')
     }
-    if (document.querySelector('[name="$$$$"]').value === 'on') {
+    if (document.querySelector('[name="$$$$"]').checked === 'true') {
         allPrice.push('4')
     }
 
     if (open == 'True') {
-        payload.open_now = "True"
+        payload.open_now = "True";
     }
     if (open == 'False') {
-        payload.open_now = "False"
+        payload.open_now = "False";
     }
     if (search !== '') {
-        payload.term = search
+        payload.term = search;
     }
     if (location !== '') {
-        payload.location = location
+        payload.location = location;
     }
     if (sort !== '') {
-        payload.sort_by = sort
+        payload.sort_by = sort;
     }
     if (allPrice !== '') {
-        payload.price = allPrice
+        payload.price = allPrice;
     }
+    if (document.querySelector('#session') !== null) {
+        const database = document.querySelector('#database').checked;
+        payload.database = database;}
+
+    
+    
 
 // fetch Json Yelp data from the backend - returns Json
     fetch('/results-top', {
@@ -72,10 +79,14 @@ document.querySelector("#search_now").addEventListener('click', evt => {
 
 function DisplayFood(responseJson) {
 
+
+const totalResponses = Object.keys(responseJson['response']['businesses']).length
+// total items returned from data pull
 console.log(responseJson);
+
 const [yesCount, setyesCount] = React.useState(0);
 const [noCount, setnoCount] = React.useState(0);
-const [likes, setlikes] = React.useState(QUERY_NUM - 1);
+const [likes, setlikes] = React.useState(totalResponses - 1);
 let [round, setround] = React.useState(1);
 const tier1Count = yesCount + noCount;
 
@@ -175,8 +186,6 @@ const overwriteReview = (evt) => {
 
             );
     });
-
-        
 }
 
 let session = '';
@@ -205,9 +214,13 @@ if (document.querySelector('#session') == undefined) {
     </div>
 );}
 
+let review = ""
 
-
-
+if (responseJson['response']['database'] == 'yes') {
+    review = "Your Review"
+} else {
+    review = "Yelp Reviews"
+}
 
 
 // logic to determine page render below
@@ -219,7 +232,7 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
             <h2>You'll be dining at:</h2>
             <h1>{tier[likes]['name']}</h1>
             <img src={`static/Imgs/${tier[likes]['rating']}.png`}></img>
-            {tier[likes]['review_count']} total reviews<br></br>
+            {tier[likes]['review_count']} {review}<br></br>
             <img src={tier[likes]['image_url']} height="350"></img>
         </div>
         
@@ -243,7 +256,7 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
                 <br></br>
                 </p>
             <img src={`static/Imgs/${tier['0']['rating']}.png`}></img>
-            {tier['0']['review_count']} total reviews
+            {tier['0']['review_count']} {review}
             <img src={tier['0']['image_url']} height="350"></img>
         </div>
         
@@ -268,13 +281,13 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
                     </h1>
                     <img src={`static/Imgs/${tier[tier1Count]['rating']}.png`}></img>
                         <br></br>
-                    {tier[tier1Count]['review_count']} total reviews
+                    {tier[tier1Count]['review_count']} {review}
                 
                 <p>
                     {tier[tier1Count]['location']['address1'] }<br></br>
                     {tier[tier1Count]['location']['city'] }<br></br>
                     <br></br>
-                    {dist1} miles away<br></br>
+                    {dist1} miles away from {tier[tier1Count]['search_location']}<br></br>
                 </p> 
                 <a href={tier[tier1Count]['url']} target="_blank">
                     <img src={tier[tier1Count]['image_url']} height="350"></img>

@@ -105,7 +105,8 @@ def create_user():
 
 @app.route("/results-top", methods=['POST'])
 def get_results():
-    """search for local restaurants with parameters"""
+    """search for local restaurants with parameters
+    or pull from local database"""
 
     url = "https://api.yelp.com/v3/businesses/search"
     auth = {'Authorization': YELP_KEY}
@@ -117,30 +118,49 @@ def get_results():
     sort = request.json.get("sort_by")
     price = request.json.get("price")
     open_now = request.json.get("open_now")
-    
-    
+    database = request.json.get("database")
+    print(session == {})
 
-    if search != '':
-        payload['term'] = search
-    if price != '':
-        payload['price'] = price
-    if sort != '':
-        payload['sort_by'] = sort
-    payload['open_now'] = open_now
-    if location != '':
-        payload['location'] = location
-
-    if session:
+    if database == True:
         email = session['email']
-        default = crud.return_user_default_location(email)
-        payload['location'] = default
-    elif location == None:
-        flash("Please enter a location")
-        return redirect("/criteria")
+        user = crud.return_user(email)
+        data1 = crud.list_rated_rests(user.user_id)
 
-    data = requests.get(url, params=payload, headers=auth).json()
+        return jsonify(data1)
 
-    return jsonify(data)
+    else:
+        if search != '':
+            payload['term'] = search
+        if price != '':
+            payload['price'] = price
+        if sort != '':
+            payload['sort_by'] = sort
+        payload['open_now'] = open_now
+        if location != '':
+            payload['location'] = location
+        
+
+        if session:
+            email = session['email']
+            default = crud.return_user_default_location(email)
+            if location == None:
+                payload['location'] = default
+                
+        if session == {}:
+            if location == None:
+                return redirect("/criteria")
+
+
+        loc = payload['location']
+        data = requests.get(url, params=payload, headers=auth).json()
+
+        for num in range(0, len(data['businesses'])):
+            data['businesses'][num]['search_location'] = loc.title()
+
+        session['search'] = loc.title()
+        data['database'] = 'no'
+        return jsonify(data)
+
 
 
 @app.route("/add-rating", methods=['POST'])
@@ -156,21 +176,24 @@ def post_rating():
     phone = request.json.get('display_phone')
     location = request.json.get('location')
     address = location['address1']
+    city = location['city']
     image = request.json.get('image_url')
     url = request.json.get('url')
     rating = float(request.json.get('rating'))
+    dist = float(request.json.get('distance'))
+    search = session['search']
 
     rest = crud.return_rest(name, phone)
 
     if rest:
         rated = crud.check_for_rating(rest.restaurant_id, user_id)
         if rated == False:
-            crud.create_rating(rest.restaurant_id, user_id, rating)
+            crud.create_rating(rest.restaurant_id, user_id, rating, name, search, dist)
         elif rated == True:
             return "You have already rated this location"
     else:
-        restaurant = crud.create_restaurant(name, address, image, url, phone)
-        crud.create_rating(restaurant.restaurant_id, user_id, rating)
+        restaurant = crud.create_restaurant(name, address, image, url, phone, city)
+        crud.create_rating(restaurant.restaurant_id, user_id, rating, name, search, dist)
         
     return "Successfully Rated"
 
@@ -186,23 +209,26 @@ def overwrite_rating():
     phone = request.json.get('display_phone')
     location = request.json.get('location')
     address = location['address1']
+    city = location['city']
     image = request.json.get('image_url')
     url = request.json.get('url')
     rating = float(request.json.get('rating'))
+    dist = float(request.json.get('distance'))
+    search = session['search']
 
     rest = crud.return_rest(name, phone)
 
     if rest:
         rate = crud.check_for_rating(rest.restaurant_id, user_id)
         if rate == False:
-            crud.create_rating(rest.restaurant_id, user_id, rating)
+            crud.create_rating(rest.restaurant_id, user_id, rating, name, search, dist)
         elif rate == True:
             crud.delete_rating(user_id, rest.restaurant_id)
-            crud.create_rating(rest.restaurant_id, user_id, rating)
+            crud.create_rating(rest.restaurant_id, user_id, rating, name, search, dist)
             return "Your previous rating has been sucessfully overwritten"
     else:
-        restaurant = crud.create_restaurant(name, address, image, url, phone)
-        crud.create_rating(restaurant.restaurant_id, user_id, rating)
+        restaurant = crud.create_restaurant(name, address, image, url, phone, city)
+        crud.create_rating(restaurant.restaurant_id, user_id, rating, name, search, dist)
         
     return "Successfully Rated"
 

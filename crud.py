@@ -13,21 +13,21 @@ def create_user(email, password, fname, lname, default_location):
     return user
 
 
-def create_restaurant(name, address, img_url, url, phone):
+def create_restaurant(name, address, img_url, url, phone, city):
     """Create new database restaurant"""
 
-    restaurant = Restaurant(name=name, address=address, img_url=img_url, url=url, phone=phone)
+    restaurant = Restaurant(name=name, address=address, img_url=img_url, url=url, phone=phone, city=city)
     db.session.add(restaurant)
     db.session.commit()
 
     return restaurant
 
-def create_rating(restaurant, user, rating):
+def create_rating(restaurant, user, rating, name, search_location, distance):
     """create new rating"""
     userid = User.query.get(user)
     restid = Restaurant.query.get(restaurant)
 
-    rate = Rating(user=userid, restaurant=restid, rating=rating)
+    rate = Rating(user=userid, restaurant=restid, rating=rating, name=name, search_location=search_location, distance=distance)
 
     db.session.add(rate)
     db.session.commit()
@@ -109,3 +109,30 @@ def delete_rating(user_id, restaurant_id):
 
     db.session.commit()
     return "Deleted"
+
+def list_rated_rests(user_id):
+    r = {}
+    r['businesses'] = []
+    
+    rates = Rating.query.options(db.joinedload('restaurant')).filter(Rating.user_id==user_id).all()
+
+    for inc in range(len(rates)):
+        item = rates[inc]
+        inc = {}
+        inc['location'] = {}
+
+        inc["name"] = item.restaurant.name
+        inc["image_url"] = item.restaurant.img_url
+        inc["review_count"] = ""
+        inc["url"] = item.restaurant.url    
+        inc["rating"] = item.rating
+        inc["location"]["address1"] = item.restaurant.address
+        inc["location"]["city"] = item.restaurant.city
+        inc["phone"] = item.restaurant.phone
+        inc["distance"] = item.distance
+        inc['search_location'] = item.search_location
+
+        r['businesses'].append(inc)
+    r['total'] = len(r['businesses'])
+    r['database'] = 'yes'
+    return r
