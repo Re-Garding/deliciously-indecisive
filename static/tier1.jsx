@@ -9,7 +9,7 @@ document.querySelector("#search_now").addEventListener('click', evt => {
         window.location.href='/criteria'
         }
     evt.preventDefault();
-    const payload = {'radius' : '40000', 'categories' : 'restaurant', 'limit' : `${QUERY_NUM}`};
+    const payload = {'limit' : `${QUERY_NUM}`};
     const search = document.querySelector('[name="search"]').value;
     const location = document.querySelector('[name="location"]').value;
     const sort = document.querySelector('[name="sort_by"]').value;
@@ -17,6 +17,7 @@ document.querySelector("#search_now").addEventListener('click', evt => {
     const open = document.querySelector('[name="open"]').value;
     const rating = [];
     const cats = document.querySelector('#cats').value;
+    const radius = document.querySelector('#radius').value;
 
     if (document.querySelector('[name="$"]').checked) {
         allPrice.push('1')
@@ -76,7 +77,7 @@ document.querySelector("#search_now").addEventListener('click', evt => {
 
     payload.rating = rating;
     payload.cats = cats;
-
+    payload.radius = radius;
     
     
 
@@ -105,7 +106,7 @@ document.querySelector("#search_now").addEventListener('click', evt => {
 
 function DisplayFood(responseJson) {
 
-console.log(responseJson);
+
 const totalResponses = Object.keys(responseJson['response']['businesses']).length
 
 if (totalResponses == 0) {
@@ -123,7 +124,7 @@ if (totalResponses == 0) {
     );
 }
 // total items returned from data pull
-console.log(responseJson);
+
 
 const [yesCount, setyesCount] = React.useState(0);
 const [noCount, setnoCount] = React.useState(0);

@@ -13,6 +13,12 @@ YELP_KEY = os.environ['API_KEY']
 app.jinja_env.undefined = StrictUndefined
 
 
+CATEGORIES = ['acaibowls', 'bagels', 'bakeries', 'beer_and_wine', 'bento', 'breweries', 'bubbletea', 
+'chimneycakes', 'churros', 'cideries', 'coffee', 'coffeeroasteries', 'cupcakes', 'delicatessen', 
+'desserts', 'donairs', 'donuts', 'eltern_cafes', 'empanadas', 'foodtrucks', 'gelato', 'gourmet', 
+'honey', 'icecream', 'jpsweets', 'juicebars', 'kombucha', 'meaderies', 'milkshakebars', 'poke', 
+'pretzels', 'salumerie', 'shavedice', 'shavedsnow', 'smokehouse', 'streetvendors', 'sugarshacks', 
+'tea', 'tortillas', 'restaurants, All']
 
 
 @app.route("/")
@@ -110,9 +116,9 @@ def get_results():
 
     url = "https://api.yelp.com/v3/businesses/search"
     auth = {'Authorization': YELP_KEY}
-    payload = {'radius' : '40000', 'limit' : '30'}
+    payload = {'limit' : '30'}
 
-    
+    cats = ''
     search = request.json.get("term")
     location = request.json.get("location")
     sort = request.json.get("sort_by")
@@ -121,28 +127,36 @@ def get_results():
     database = request.json.get("database")
     rating = request.json.get('rating')
     categories = str(request.json.get('cats'))
-    print('server*********************************************************************************************************')
-    print(categories)
+    radius = int(request.json.get('radius'))
+    cats = ''
+    
 
 
 
     if database == True:
         email = session['email']
         user = crud.return_user(email)
+        (print(user))
         data1 = crud.list_rated_rests(user.user_id, rating, categories)
 
         return jsonify(data1)
 
     else:
+        for item in CATEGORIES:
+            n = item
+            cats += f"{item},"
+        payload['categories'] = f"{cats[:-1]}"
         if search != '':
             payload['term'] = search
         if price != '':
             payload['price'] = price
         if sort != '':
             payload['sort_by'] = sort
-        payload['open_now'] = open_now
         if location != '':
             payload['location'] = location
+
+        payload['radius'] = radius
+        payload['open_now'] = open_now
 
         if session:
             email = session['email']
@@ -154,7 +168,9 @@ def get_results():
             if location == None:
                 return redirect("/criteria")
 
-
+        # print('server*********************************************************************************************************')
+        # print(payload['categories'])
+        # print('server*********************************************************************************************************')
         loc = payload['location']
         data = requests.get(url, params=payload, headers=auth).json()
 
@@ -199,8 +215,8 @@ def post_rating():
             cat2 = categories[i]['title']
         elif i == 2:
             cat3 = categories[i]['title']
-    print(cat1,cat2,cat3)
-    print("***************************************************************************")
+    # print(cat1,cat2,cat3)
+    # print("***************************************************************************")
 
     if rest:
         rated = crud.check_for_rating(rest.restaurant_id, user_id)
@@ -245,8 +261,8 @@ def overwrite_rating():
             cat2 = categories[i]['title']
         elif i == 2:
             cat3 = categories[i]['title']
-    print(cat1,cat2,cat3)
-
+    # print(cat1,cat2,cat3)
+    #  print('***************************************************************')
     if rest:
         rate = crud.check_for_rating(rest.restaurant_id, user_id)
         if rate == False:
