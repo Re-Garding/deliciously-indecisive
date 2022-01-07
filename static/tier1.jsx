@@ -1,5 +1,6 @@
 "user_strict"
 
+
 const QUERY_NUM = 30;
 
 document.querySelector("#search_now").addEventListener('click', evt => {
@@ -14,20 +15,42 @@ document.querySelector("#search_now").addEventListener('click', evt => {
     const sort = document.querySelector('[name="sort_by"]').value;
     const allPrice = [];
     const open = document.querySelector('[name="open"]').value;
-    
+    const rating = [];
+    const cats = document.querySelector('#cats').value;
 
-    if (document.querySelector('[name="$"]').checked === 'true') {
+    if (document.querySelector('[name="$"]').checked) {
         allPrice.push('1')
     }
-    if (document.querySelector('[name="$$"]').checked === 'true') {
+    if (document.querySelector('[name="$$"]').checked) {
         allPrice.push('2')
     }
-    if (document.querySelector('[name="$$$"]').checked === 'true') {
+    if (document.querySelector('[name="$$$"]').checked) {
         allPrice.push('3')
     }
-    if (document.querySelector('[name="$$$$"]').checked === 'true') {
+    if (document.querySelector('[name="$$$$"]').checked) {
         allPrice.push('4')
     }
+
+    if (document.querySelector('[name="1"]').checked) {
+        rating.push('1')}
+    if (document.querySelector('[name="1.5"]').checked) {
+        rating.push('1.5')}
+    if (document.querySelector('[name="2"]').checked) {
+        rating.push('2')}
+    if (document.querySelector('[name="2.5"]').checked) {
+        rating.push('2.5')}
+    if (document.querySelector('[name="3"]').checked) {
+        rating.push('3')}
+    if (document.querySelector('[name="3.5"]').checked) {
+        rating.push('3.5')}
+    if (document.querySelector('[name="4"]').checked) {
+        rating.push('4')}
+    if (document.querySelector('[name="4.5"]').checked) {
+        rating.push('4.5')}
+    if (document.querySelector('[name="5"]').checked) {
+        rating.push('5')}   
+
+
 
     if (open == 'True') {
         payload.open_now = "True";
@@ -50,6 +73,9 @@ document.querySelector("#search_now").addEventListener('click', evt => {
     if (document.querySelector('#session') !== null) {
         const database = document.querySelector('#database').checked;
         payload.database = database;}
+
+    payload.rating = rating;
+    payload.cats = cats;
 
     
     
@@ -79,8 +105,23 @@ document.querySelector("#search_now").addEventListener('click', evt => {
 
 function DisplayFood(responseJson) {
 
-
+console.log(responseJson);
 const totalResponses = Object.keys(responseJson['response']['businesses']).length
+
+if (totalResponses == 0) {
+    return (
+        <React.Fragment>
+        <div>
+            <h2>Your Search Returned Zero Results</h2>
+        </div>
+        <div>
+        <img src={'static/Imgs/spag.jpg'} height="350"></img>
+        </div>
+        <button type="button" onClick={ () => location.href=`${'/criteria'}`}> 
+                Start a New Search </button>
+        </React.Fragment>
+    );
+}
 // total items returned from data pull
 console.log(responseJson);
 
@@ -144,6 +185,8 @@ const postReview = (evt) => {
     const data = tier[tier1Count];
     const rate = document.querySelector('[name="rate"]').value;
     data['rating'] = rate;
+    data['categories'] = data['categories']
+
 
     fetch('/add-rating', {
         method: 'POST',
@@ -222,6 +265,23 @@ if (responseJson['response']['database'] == 'yes') {
     review = "Yelp Reviews"
 }
 
+let advice = "";
+
+if (round == 1) {
+    advice = "Say yes to everything that looks good"
+}
+else if (round == 2) {
+    advice = "Time to be a little more selective"
+}
+else if (round == 3) {
+    advice = "Time to be really choosy"
+}
+else if (round == 4) {
+    advice = "Time to weed out the duds"
+}
+else if (round == 5) {
+    advice = "Time to be completely picky"
+}
 
 // logic to determine page render below
 
@@ -273,6 +333,10 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
                 
             <div>
                 <h1> Round {round}</h1>
+
+                    <h3>
+                        ~ {advice} ~
+                    </h3>
                     <h2>
                         Option {tier1Count + 1} of {likes+1}
                     </h2>

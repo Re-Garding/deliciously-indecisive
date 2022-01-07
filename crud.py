@@ -1,5 +1,6 @@
 """Crud operations"""
 from model import db, User, Rating, Restaurant, connect_to_db
+from sqlalchemy import or_
 
 
 
@@ -22,12 +23,12 @@ def create_restaurant(name, address, img_url, url, phone, city):
 
     return restaurant
 
-def create_rating(restaurant, user, rating, name, search_location, distance):
+def create_rating(restaurant, user, rating, name, search_location, distance, cat1, cat2, cat3):
     """create new rating"""
     userid = User.query.get(user)
     restid = Restaurant.query.get(restaurant)
 
-    rate = Rating(user=userid, restaurant=restid, rating=rating, name=name, search_location=search_location, distance=distance)
+    rate = Rating(user=userid, restaurant=restid, rating=rating, name=name, search_location=search_location, distance=distance, category1=cat1, category2=cat2, category3=cat3)
 
     db.session.add(rate)
     db.session.commit()
@@ -110,16 +111,30 @@ def delete_rating(user_id, restaurant_id):
     db.session.commit()
     return "Deleted"
 
-def list_rated_rests(user_id):
+def list_rated_rests(user_id, rating, cats):
     r = {}
     r['businesses'] = []
     
-    rates = Rating.query.options(db.joinedload('restaurant')).filter(Rating.user_id==user_id).all()
+    user_sort = Rating.user_id==user_id
+    rating_sort = Rating.rating.in_(rating)
+    
 
-    for inc in range(len(rates)):
-        item = rates[inc]
+    if cats == "N/A":
+        rated = Rating.query.options(db.joinedload('restaurant')).filter(user_sort, rating_sort).all()
+    else:
+        # cat_sort = Rating.category1.in_(cats), Rating.category2.in_(cats), Rating.category3.in_(cats)
+
+        cat_sort = (Rating.category1==cats) | (Rating.category2==cats) | (Rating.category3==cats)
+        rated = Rating.query.options(db.joinedload('restaurant')).filter(user_sort, rating_sort, cat_sort).all()
+    print(cats)
+    print('crud****************************************************************************************************************************************************')
+    print(rated)
+    print('****************************************************************************************************************************************************')
+    for inc in range(len(rated)):
+        item = rated[inc]
         inc = {}
         inc['location'] = {}
+        inc['categories'] = []
 
         inc["name"] = item.restaurant.name
         inc["image_url"] = item.restaurant.img_url
@@ -128,9 +143,12 @@ def list_rated_rests(user_id):
         inc["rating"] = item.rating
         inc["location"]["address1"] = item.restaurant.address
         inc["location"]["city"] = item.restaurant.city
-        inc["phone"] = item.restaurant.phone
+        inc["display_phone"] = item.restaurant.phone
         inc["distance"] = item.distance
         inc['search_location'] = item.search_location
+        inc['categories'].append(item.category1)
+        inc['categories'].append(item.category2)
+        inc['categories'].append(item.category3)
 
         r['businesses'].append(inc)
     r['total'] = len(r['businesses'])
