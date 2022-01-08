@@ -74,6 +74,41 @@ def connect_to_db(flask_app, db_uri="postgresql:///ratings", echo=True):
 
     print("Connected to the db!")
 
+def test_data():
+    """example data for testing"""
+    User.query.delete()
+    Restaurant.query.delete()
+    Rating.query.delete()
+
+    u1 = User(user_id='2', email='beckyg@gardings.com', password='12345', fname='Becky', lname='Garding', 
+    default_location='Eagle Mountian, UT')
+    u2 = User(user_id='3', email='laura@gardings.com', password='12345', fname='Laura', lname='Shafer', 
+    default_location='Spokane WA')
+    u3 = User(user_id='4', email='diane@gardings.com', password='12345', fname='Diane', lname='Garding', 
+    default_location='Eagle Mountian, UT')
+
+    rest1 = Restaurant(restaurant_id='1', name='Toscanos', address='123 Fake St', img_url='fakeurl.com', 
+    url='newurl.com', phone='123-456-7891', city='Eagle Mountain')
+    rest2 = Restaurant(restaurant_id='2', name='Pizza Hut', address='321 Fake St', img_url='fakeurl.com', 
+    url='newurl.com', phone='123-456-7890', city='Eagle Mountain')
+    rest3 = Restaurant(restaurant_id='3', name='Zuppas', address='456 Fake St', img_url='fakeurl.com', 
+    url='newurl.com', phone='123-456-7892', city='Eagle Mountain')
+
+    r1 = Rating(restaurant_id=rest1.restaurant_id, user_id=u1.user_id, rating='5', name='Toscanos',
+     search_location='Eagle Mountain, UT', distance='4500', category1='Brazilian', 
+     category2='Meat', category3='Swords')
+
+    r2 = Rating(restaurant_id=rest2.restaurant_id, user_id=u1.user_id, rating='4.5', name='Pizza Hut',
+     search_location='Eagle Mountain, UT', distance='2500', category1='Pizza', 
+     category2='Italian', category3='')
+
+    r3 = Rating(restaurant_id=rest3.restaurant_id, user_id=u3.user_id, rating='5', name='Zuppas',
+     search_location='Eagle Mountain, UT', distance='35000', category1='Soup', 
+     category2='Salad', category3='Sandwich')
+
+    db.session.add_all([u1, u2, u3, rest1, rest2, rest3, r1, r2, r3])
+    db.session.commit()
+
 if __name__ == "__main__":
     from server import app
 

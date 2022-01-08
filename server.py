@@ -70,6 +70,7 @@ def login_user():
             session['password'] = password
             session['default_location'] = crud.return_user_default_location(email)
             session['fname'] = crud.return_user_fname(email)
+
             return redirect("/criteria")
         else:
             flash("Incorrect password")
