@@ -3,33 +3,56 @@
 
 {% block title %} Welcome! Please login {% endblock %}
 {% block body %} 
-<dev>
-    <h1>Welcome to Deliciously Indecisive! Please create your profile. </h1> 
-</dev>    
-<dev>
-    <form action="/createuser" method="POST">
-        <p>
-            First Name <input type="text" name="fname">
-        </p>
-        <p>
-            Last Name <input type="text" name="lname">
-        </p>
-        <p>
-            Default Location <input type="text" name="default_loc"><br>
-            <label>***Default location is loaded in when you leave search location blank***</label>
-        </p>
-        <p>
-            Email <input type="text" name="email">
-        </p>
-        <p>
-            Password <input type="password" name="password">
-        </p>
-        <p>
-            <input type="submit">
-        </p>
-    </form>
-    <a href="/login">Return to Login</a>
-</dev>
+<div class="top">
+    <h1>Please Create Your Profile </h1> 
+</div> 
+<div class="create-image">
+</div>
+<br>
+<br>
+<div class="container"> 
+    <div class="row d-flex p-2 bd-highlight">
+        <form action="/createuser" method="POST">
+            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
+                <p>
+                    First Name: <input type="text" name="fname">
+                </p>
+            </div>
+            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
+                <p>
+                    Last Name: <input type="text" name="lname">
+                </p>
+            </div>
+            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
+                <p>
+                    Default Location: <input type="text" name="default_loc"><br>
+                </p>
+            </div>
+            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
+                <p>
+                    Email: <input type="text" name="email">
+                </p>
+            </div>
+            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
+                <p>
+                    Password: <input type="password" name="password">
+                </p>
+            </div>
+            <br>
+            <div class="col-lg-4 offset-4 d-flex justify-content-center">
+                <p>
+                    <button class="button-75" type="submit">Create Profile</button>
+                </p>
+            </div>
+        </form >
+
+        <form action="/login">
+            <div class="col-lg-4 offset-4 d-flex justify-content-center">
+                <button class="button-75 " type="submit" >Login Page</button>
+            </div>
+        </form>
+    </div>
+</div>  
 
 
 {% endblock %}

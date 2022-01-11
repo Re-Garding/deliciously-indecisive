@@ -16,6 +16,7 @@ class AppIntegrationTests(unittest.TestCase):
         """to reduce repetetive code"""
         self.client = server.app.test_client()
         server.app.config['TESTING'] = True
+        
 
     
 
@@ -53,13 +54,18 @@ class FlaskTestsDatabase(unittest.TestCase):
 
     def setUp(self):
         """to reduce repetetive code"""
-        self.client = server.app.test_client()
         server.app.config['TESTING'] = True
-
+        server.app.config['SECRET_KEY'] = 'key'
+        self.client = server.app.test_client()
         connect_to_db(server.app, "postgresql:///testdb")
         db.create_all()
         test_data()
+
+        with self.client as c:
+                with c.session_transaction() as sess:
+                    sess['email'] = 'laura@gardings.com'
     
+
     def tearDown(self):
         """for database tests"""
         db.session.remove()
@@ -67,7 +73,7 @@ class FlaskTestsDatabase(unittest.TestCase):
         db.engine.dispose()
 
 
-# Post test for create user and login
+# Post tests for create user, login, criteria/db call
 
     def test_login_function(self):
         """test login functionality with test db"""
@@ -84,6 +90,11 @@ class FlaskTestsDatabase(unittest.TestCase):
         'default_location' : 'Eagle Mountain'}, follow_redirects=True)
         self.assertIn(b'<div id="locate">', result.data)
 
+    def test_empty_ratings_db_call(self):
+        """test zero results when 'pull results from rated restraunts is selected"""
+        result = self.client.post('/results-top', data={'database' : True, 
+        'rating' : '5', 'categories' : ""})
+        self.assertIn(b'<h2>Your Search Returned Zero Results</h2>', result.data)
 
 if __name__ == '__main__':
     # If called like a script, run our tests

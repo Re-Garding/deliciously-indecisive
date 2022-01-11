@@ -94,7 +94,9 @@ def create_user():
     default_location = request.form.get("default_loc", "")
 
     user = crud.verify_user_by_email(email)
-
+    if email or password or fname or lname or default_location == "":
+        flash("Please fill out all items")
+        return redirect("/createuser")
     if user:
         flash('User Already Exists, please log in.')
     else:
@@ -169,9 +171,6 @@ def get_results():
             if location == None:
                 return redirect("/criteria")
 
-        # print('server*********************************************************************************************************')
-        # print(payload['categories'])
-        # print('server*********************************************************************************************************')
         loc = payload['location']
         data = requests.get(url, params=payload, headers=auth).json()
 
@@ -216,8 +215,6 @@ def post_rating():
             cat2 = categories[i]['title']
         elif i == 2:
             cat3 = categories[i]['title']
-    # print(cat1,cat2,cat3)
-    # print("***************************************************************************")
 
     if rest:
         rated = crud.check_for_rating(rest.restaurant_id, user_id)
@@ -262,8 +259,7 @@ def overwrite_rating():
             cat2 = categories[i]['title']
         elif i == 2:
             cat3 = categories[i]['title']
-    # print(cat1,cat2,cat3)
-    #  print('***************************************************************')
+
     if rest:
         rate = crud.check_for_rating(rest.restaurant_id, user_id)
         if rate == False:

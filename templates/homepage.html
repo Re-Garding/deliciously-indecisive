@@ -1,37 +1,81 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
 
-
 {% block body %} 
-<h1>Welcome to Deliciously Indecisive!</h1> 
-    <dev>
-        <h2>The site built for people who love to eat out, but hate to decide where to go.
-        </h2>
-    </dev>
-    {% if not session %}
-<dev id="login">
-    <form action="/login">
-        <button type="submit" >Login Here!</button>
-    </form>
-    <form action="/createuser">
-        <button type="submit" >Create A Profile</button>
-    </form>
-    <form action="/criteria">
-        <button type="submit" >Continue as Guest</button>
-    </form>
-</dev>
-{% endif %}
+<div class="row">
+    <div >
+        <h1 class="top">Welcome to Deliciously Indecisive!</h1>
+    </div> 
+</div>
+<div class="row">
+    <div  >
+        <h3 class="top">
+            The site built for people who love to eat out, 
+            but hate thinking of where to go.
+        </h3>
+    </div>
+</div>
+    <div class="main-image">
+    </div>
+    <div class="container">
+        
+        
+            
+            
+                
+            
+            {% if not session %}
+                <div class="row input d-flex p-2 bd-highlight" id="buttons">
+                    <div id="login" class="col-lg-3  d-flex justify-content-center">
+                        <form action="/login" >
+                            <button type="submit" class="button-75">Login Here!</button>
+                        </form>
+                    </div>
+                    <div class="col-lg-3 d-flex justify-content-center">
+                        <form action="/createuser">
+                            <button class="button-75" type="submit" >Create A Profile</button>
+                        </form>
+                    </div>
+                    <div class="col-lg-3 d-flex justify-content-center">
+                        <form action="/criteria">
+                            <button class="button-75" type="submit" >Continue as Guest</button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
 
 
-{% if session %}
-<dev id="login">
-    <form action="/login">
-        <button type="submit" >Change Profiles</button>
-    </form>
-    <form action="/criteria">
-        <button type="submit" >Continue to Search</button>
-    </form>
-</dev>
-{% endif %}
+        {% if session %}
+            <div class="row input d-flex p-2 bd-highlight" id="buttons">
+                <div id="login" class="col-lg-6 d-flex justify-content-center">
+                    <form action="/login">
+                        <button class="button-75" type="submit" >Change Profiles</button>
+                    </form>
+                </div>
+                <div class="col-lg-6 d-flex justify-content-center">
+                    <form action="/criteria">
+                        <button class="button-75" type="submit" >Start Search</button>
+                    </form>
+                    </div>
+            </div>
+        {% endif %}
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div id="credit">
+        Site built by Becky G
+    </div>
+
 
 {% endblock %}
