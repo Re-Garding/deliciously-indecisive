@@ -1,6 +1,6 @@
 """Crud operations"""
 from model import db, User, Rating, Restaurant, connect_to_db
-from sqlalchemy import or_
+from sqlalchemy import or_, psycopg2
 
 
 
