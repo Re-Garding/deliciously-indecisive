@@ -8,48 +8,61 @@
 </div> 
 <div class="create-image">
 </div>
-<br>
-<br>
+
 <div class="container"> 
-    <div class="row d-flex p-2 bd-highlight">
-        <form action="/createuser" method="POST">
-            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
-                <p>
+    
+    <form action="/createuser" method="POST">
+        
+        <div class="row d-flex p-2 bd-highlight">
+            <div class="d-flex justify-content-center">
+                <p class="box">
                     First Name: <input type="text" name="fname">
                 </p>
             </div>
-            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
-                <p>
+        </div>
+        <div class="row d-flex p-2 bd-highlight">
+            <div class="d-flex justify-content-center">
+                <p class="box">
                     Last Name: <input type="text" name="lname">
                 </p>
             </div>
-            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
-                <p>
+        </div> 
+        <div class="row d-flex p-2 bd-highlight">
+            <div class="d-flex justify-content-center">
+                <p class="box">
                     Default Location: <input type="text" name="default_loc"><br>
                 </p>
             </div>
-            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
-                <p>
+        </div>
+        <div class="row d-flex p-2 bd-highlight">
+            <div class="d-flex justify-content-center">
+                <p class="box">
                     Email: <input type="text" name="email">
                 </p>
             </div>
-            <div class="col-lg-4 offset-4 d-flex justify-content-center box">
-                <p>
+        </div>
+        <div class="row d-flex p-2 bd-highlight">
+            <div class="d-flex justify-content-center">
+                <p class="box">
                     Password: <input type="password" name="password">
                 </p>
             </div>
-            <br>
-            <div class="col-lg-4 offset-4 d-flex justify-content-center">
+        </div>
+        
+        <div class="row d-flex p-2 bd-highlight">
+            <div class="d-flex justify-content-center">
                 <p>
                     <button class="button-75" type="submit">Create Profile</button>
                 </p>
             </div>
-        </form >
+        </div>
+    </form >
 
         <form action="/login">
-            <div class="col-lg-4 offset-4 d-flex justify-content-center">
+            <div class="d-flex justify-content-center">
                 <button class="button-75 " type="submit" >Login Page</button>
             </div>
+        
         </form>
     </div>
 </div>  

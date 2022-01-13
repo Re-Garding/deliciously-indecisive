@@ -16,8 +16,8 @@ document.querySelector("#search_now").addEventListener('click', evt => {
     const allPrice = [];
     const open = document.querySelector('[name="open"]').value;
     const rating = [];
-    const cats = document.querySelector('#cats').value;
     const radius = document.querySelector('#radius').value;
+
 
     if (document.querySelector('[name="$"]').checked) {
         allPrice.push('1')
@@ -32,31 +32,9 @@ document.querySelector("#search_now").addEventListener('click', evt => {
         allPrice.push('4')
     }
 
-    if (document.querySelector('[name="1"]').checked) {
-        rating.push('1')}
-    if (document.querySelector('[name="1.5"]').checked) {
-        rating.push('1.5')}
-    if (document.querySelector('[name="2"]').checked) {
-        rating.push('2')}
-    if (document.querySelector('[name="2.5"]').checked) {
-        rating.push('2.5')}
-    if (document.querySelector('[name="3"]').checked) {
-        rating.push('3')}
-    if (document.querySelector('[name="3.5"]').checked) {
-        rating.push('3.5')}
-    if (document.querySelector('[name="4"]').checked) {
-        rating.push('4')}
-    if (document.querySelector('[name="4.5"]').checked) {
-        rating.push('4.5')}
-    if (document.querySelector('[name="5"]').checked) {
-        rating.push('5')}   
-
-
-
     if (open == 'True') {
         payload.open_now = "True";
-    }
-    if (open == 'False') {
+    } else {
         payload.open_now = "False";
     }
     if (search !== '') {
@@ -73,10 +51,34 @@ document.querySelector("#search_now").addEventListener('click', evt => {
     }
     if (document.querySelector('#session') !== null) {
         const database = document.querySelector('#database').checked;
-        payload.database = database;}
+        payload.database = database;
+        let cats = document.querySelector('#cats').value;
+        payload.cats = cats;
+      
+        if (document.querySelector('[name="1"]').checked) {
+            rating.push('1')}
+        if (document.querySelector('[name="1.5"]').checked) {
+            rating.push('1.5')}
+        if (document.querySelector('[name="2"]').checked) {
+            rating.push('2')}
+        if (document.querySelector('[name="2.5"]').checked) {
+            rating.push('2.5')}
+        if (document.querySelector('[name="3"]').checked) {
+            rating.push('3')}
+        if (document.querySelector('[name="3.5"]').checked) {
+            rating.push('3.5')}
+        if (document.querySelector('[name="4"]').checked) {
+            rating.push('4')}
+        if (document.querySelector('[name="4.5"]').checked) {
+            rating.push('4.5')}
+        if (document.querySelector('[name="5"]').checked) {
+            rating.push('5')}
+    } else {
+        const cats = "";
+        payload.cats = cats;
+    }
 
     payload.rating = rating;
-    payload.cats = cats;
     payload.radius = radius;
     
     
@@ -112,14 +114,22 @@ const totalResponses = Object.keys(responseJson['response']['businesses']).lengt
 if (totalResponses == 0) {
     return (
         <React.Fragment>
-        <div>
-            <h2>Your Search Returned Zero Results</h2>
+        <div className="row d-flex p-2 bd-highlight top">
+            <div className="d-flex justify-content-center">
+                <h2>Your Search Returned Zero Results</h2>
+            </div>
         </div>
-        <div>
-        <img src={'static/Imgs/spag.jpg'} height="350"></img>
+            <div className="row d-flex p-2 bd-highlight">
+                <div className="d-flex justify-content-center">
+                    <img src={'static/Imgs/spag.jpg'} height="275"></img>
+                </div>
+            </div>
+        <div className="row d-flex p-2 bd-highlight">
+            <div className="d-flex justify-content-center">
+                <button className="button-75" type="button" onClick={ () => location.href=`${'/criteria'}`}> 
+                    Start a New Search </button>
+            </div>
         </div>
-        <button type="button" onClick={ () => location.href=`${'/criteria'}`}> 
-                Start a New Search </button>
         </React.Fragment>
     );
 }
@@ -141,7 +151,8 @@ const wrapClickYes = () => {
     // console.log(likes);
     setyesCount(yesCount => yesCount + 1);
     tier[yesCount] = tier[tier1Count];
-    document.querySelector('#response').innerHTML = "";
+    if(document.querySelector('#response')){
+        document.querySelector('#response').innerHTML = "";}
 
     
     if (yesCount != tier1Count) 
@@ -157,7 +168,8 @@ const wrapClickYes = () => {
 const wrapClickNo = () => {
     setnoCount(noCount => noCount + 1);
     delete tier[tier1Count];
-    document.querySelector('#response').innerHTML = "";
+    if(document.querySelector('#response')){
+    document.querySelector('#response').innerHTML = "";}
     // console.log(tier);
     // console.log(tier1Count);
 
@@ -185,8 +197,10 @@ const postReview = (evt) => {
     evt.preventDefault();
     const data = tier[tier1Count];
     const rate = document.querySelector('[name="rate"]').value;
+    const search = responseJson['response']['search'];
     data['rating'] = rate;
-    data['categories'] = data['categories']
+    data['categories'] = data['categories'];
+    data['search'] = search;
 
 
     fetch('/add-rating', {
@@ -212,7 +226,9 @@ const overwriteReview = (evt) => {
     evt.preventDefault();
     const data = tier[tier1Count];
     const rate = document.querySelector('[name="rate"]').value;
+    const search = responseJson['response']['search'];
     data['rating'] = rate;
+    data['search'] = search;
 
     fetch('/overwrite-rating', {
         method: 'POST',
@@ -239,22 +255,39 @@ if (document.querySelector('#session') == undefined) {
 } else {
     session = (
     <div id="rate">
-        <h3>Have you been here before? Would you like to rate this restaurant?</h3>
-            <form>
-                <select name='rate'>
-                    <option value="1">1 Star</option>
-                    <option value="1.5">1.5 Star</option>
-                    <option value="2">2 Star</option>
-                    <option value="2.5">2.5 Star</option>
-                    <option value="3">3 Star</option>
-                    <option value="3.5">3.5 Star</option>
-                    <option value="4">4 Star</option>
-                    <option value="4.5">4.5 Star</option>
-                    <option value="5">5 Star</option>
-                </select>
-            <button type="submit" onClick={postReview}>Leave Rating</button>
-            <button type="submit" onClick={overwriteReview}>Overwrite Review</button>
+        <div className="row d-flex p-2 bd-highlight">
+            <div className="d-flex justify-content-center">
+                <h3 className="text" id="rate">Have you been here before? Would you like to rate this restaurant?</h3>
+            </div>
+        </div>
+        <form>
+            <div className="row d-flex p-2 bd-highlight">
+                <div className="col-2 offset-5 d-flex justify-content-center">
+                    <select name='rate'>
+                        <option value="1">1 Star</option>
+                        <option value="1.5">1.5 Star</option>
+                        <option value="2">2 Star</option>
+                        <option value="2.5">2.5 Star</option>
+                        <option value="3">3 Star</option>
+                        <option value="3.5">3.5 Star</option>
+                        <option value="4">4 Star</option>
+                        <option value="4.5">4.5 Star</option>
+                        <option value="5">5 Star</option>
+                    </select>
+                </div>
+            </div>
+            <div className="row d-flex p-2 bd-highlight">
+                <div className="d-flex justify-content-center">
+                    <button id="rate" className="button-75" type="submit" onClick={postReview}>Leave Rating</button>
+                    <button id="rate" className="button-75" type="submit" onClick={overwriteReview}>Overwrite Review</button>
+                </div>
+            </div>
         </form>
+        <div className="text" id="response"></div>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
     </div>
 );}
 
@@ -290,82 +323,146 @@ if ((Object.keys(tier).length === 1 && tier['0'] === undefined)) {
     return (
         <React.Fragment>
         <div>
-            <h2>You'll be dining at:</h2>
-            <h1>{tier[likes]['name']}</h1>
-            <img src={`static/Imgs/${tier[likes]['rating']}.png`}></img>
-            {tier[likes]['review_count']} {review}<br></br>
-            <img src={tier[likes]['image_url']} height="350"></img>
+            <h2 className="text top">You'll be dining at:</h2>
+            <h1 className="text top name">{tier[likes]['name']}</h1>
         </div>
-        
-        <button type="button" onClick={ () => location.href=`${tier[likes]['url']}`}> 
-                See Restraunt Details </button>
-        <button type="button" onClick={ () => location.href=`${'/criteria'}`}> 
-                Eh, I'm not feeling it.. Start a new Search </button>
+        <div className="row d-flex p-2 bd-highlight">
+                    <div className="d-flex justify-content-center">
+                        <p className="text inline">
+                            <img src={`static/Imgs/${tier[likes]['rating']}.png`}></img>
+                        </p>
+                        <div>  </div>
+                        <p className="text">
+                            {tier[likes]['review_count']} {review} 
+                        </p>
+                    </div>
+                </div>
+                <p className="text">
+                    {tier[tier1Count]['location']['address1']} {tier[tier1Count]['location']['city'] }<br></br>
+                    {dist1} miles away from {tier[tier1Count]['search_location']}<br></br>
+                </p> 
+            <div className="row d-flex p-2 bd-highlight">
+                <div className="d-flex justify-content-center">
+                    <a href={tier[tier1Count]['url']} target="_blank">
+                        <img className="center" src={tier[tier1Count]['image_url']} height="250"></img>
+                        </a>
+                </div>
+            </div>
+        <div className="row d-flex p-2 bd-highlight">
+            <div className="d-flex justify-content-center">
+                <button className="button-75" type="button" onClick={ () => location.href=`${tier[likes]['url']}`}> 
+                        See Restraunt Details </button>
+                <button className="button-75" type="button" onClick={ () => location.href=`${'/criteria'}`}> 
+                        Eh, I'm not feeling it. </button>
+            </div>
+        </div>
         </React.Fragment>
     );  
 
 } else if (Object.keys(tier).length === 1 && tier['0'] !== undefined) {
     return (
         <React.Fragment>
-        <div>
-            <h2>You'll be dining at:</h2>
-            <h1>{tier['0']['name']}</h1>
-            <p>
-                {tier['0']['location']['address1'] }<br></br>
-                {tier['0']['location']['city'] }<br></br>
-            <br></br>
-                <br></br>
-                </p>
-            <img src={`static/Imgs/${tier['0']['rating']}.png`}></img>
-            {tier['0']['review_count']} {review}
-            <img src={tier['0']['image_url']} height="350"></img>
+            <h2 className="text top">You'll be dining at:</h2>
+            <h1 className="text top name">{tier['0']['name']}</h1>
+                        <div className="row d-flex p-2 bd-highlight">
+                <div className="d-flex justify-content-center">
+                    <p className="text inline">
+                        <img src={`static/Imgs/${tier['0']['rating']}.png`}></img>
+                    </p>
+                        <div>  </div>
+                    <p className="text">
+                        {tier['0']['review_count']} {review} 
+                    </p>
+                </div>
+            </div>
+            <p className="text">
+                {tier['0']['location']['address1']} {tier['0']['location']['city'] }<br></br>
+                {dist1} miles away from {tier['0']['search_location']}<br></br>
+            </p> 
+            <div className="row d-flex p-2 bd-highlight">
+                    <div className="d-flex justify-content-center">
+                        <a href={tier['0']['url']} target="_blank">
+                            <img className="center" src={tier['0']['image_url']} height="250"></img>
+                         </a>
+                    </div>
+                </div>
+        <div className="row d-flex p-2 bd-highlight">
+            <div className="d-flex justify-content-center">
+                <button className="button-75" type="button" onClick={ () => location.href=`${tier['0']['url']}`}> 
+                    See Restraunt Details </button>
+                <button className="button-75" type="button" onClick={ () => location.href=`${'/criteria'}`}> 
+                    Eh, I'm not feeling it.</button>
+            </div>
         </div>
-        
-        <button type="button" onClick={ () => location.href=`${tier['0']['url']}`}> 
-                See Restraunt Details </button>
-        <button type="button" onClick={ () => location.href=`${'/criteria'}`}> 
-                Eh, I'm not feeling it.. Start a new Search </button>
         </React.Fragment>
     ); 
 } 
     else {
         return (
             <React.Fragment>
-                
-            <div>
-                <h1> Round {round}</h1>
-
-                    <h3>
-                        ~ {advice} ~
-                    </h3>
-                    <h2>
-                        Option {tier1Count + 1} of {likes+1}
-                    </h2>
-                    <h1>
-                        {tier[tier1Count]['name']}
-                    </h1>
-                    <img src={`static/Imgs/${tier[tier1Count]['rating']}.png`}></img>
-                        <br></br>
-                    {tier[tier1Count]['review_count']} {review}
-                
-                <p>
-                    {tier[tier1Count]['location']['address1'] }<br></br>
-                    {tier[tier1Count]['location']['city'] }<br></br>
-                    <br></br>
-                    {dist1} miles away from {tier[tier1Count]['search_location']}<br></br>
-                </p> 
-                <a href={tier[tier1Count]['url']} target="_blank">
-                    <img src={tier[tier1Count]['image_url']} height="350"></img>
-                </a>
-            </div>
             
-            <button type="button" onClick={wrapClickYes}> 
-                    Sounds Great! </button>
-            <button type="button" onClick={wrapClickNo}> 
-                    Not in the Mood </button>
+                <div id="box2" className="row d-flex p-3 bd-highlight">
+                    <div className="d-flex justify-content-center">
+                        <h1 id="count" className="col-3 text d-flex justify-content-center align-items-center"> Round {round}</h1>
+                    
+                        <h3 id="advice" className="col-6 text d-flex align-items-center d-flex justify-content-center">
+                            ~ {advice} ~
+                        </h3>
+                    
+                        <h2 id="option" className="col-3 text d-flex justify-content-center align-items-center">
+                            Option {tier1Count + 1} of {likes+1}
+                        </h2>
+                    </div>
+                </div>
+
+
+            <div className="background">
+                <div className="row d-flex p-2 bd-highlight">
+                    <div className="d-flex justify-content-center">
+                        <h1 id="name" fontSize="36px" className="text name">
+                            {tier[tier1Count]['name']}
+                        </h1>
+                    </div>
+                </div>
+                <div className="row d-flex p-2 bd-highlight">
+                    <div className="d-flex justify-content-center">
+                        <p className="text inline">
+                            <img src={`static/Imgs/${tier[tier1Count]['rating']}.png`}></img>
+                        </p>
+                        <div>  </div>
+                        <p className="text">
+                            {tier[tier1Count]['review_count']} {review} 
+                        </p>
+                    </div>
+                </div>
+
+                        <p className="text">
+                            {tier[tier1Count]['location']['address1']} {tier[tier1Count]['location']['city'] }<br></br>
+                            {dist1} miles away from {tier[tier1Count]['search_location']}<br></br>
+                        </p> 
+
+                <div className="row d-flex p-2 bd-highlight">
+                    <div className="d-flex justify-content-center">
+                        <a href={tier[tier1Count]['url']} target="_blank">
+                            <img className="center" src={tier[tier1Count]['image_url']} height="250"></img>
+                         </a>
+                    </div>
+                </div>
+            
+                <div className="row d-flex p-2 bd-highlight">
+                    <div className="d-flex justify-content-center">
+                    <button className=" col-3 button-75" type="button" onClick={wrapClickYes}> 
+                            Sounds Great! </button>
+                    <button className=" col-3 button-75" type="button" onClick={wrapClickNo}> 
+                            Not in the Mood </button>
+                </div>
+            </div>
+        
             
             {session}
+        </div>
             </React.Fragment>);
+        
 };
 }
 

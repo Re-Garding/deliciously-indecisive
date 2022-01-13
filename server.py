@@ -92,13 +92,14 @@ def create_user():
     fname = request.form.get("fname", "").title()
     lname = request.form.get("lname", "").title()
     default_location = request.form.get("default_loc", "")
-
     user = crud.verify_user_by_email(email)
-    if email or password or fname or lname or default_location == "":
+
+    if email == "" or password == "" or fname == "" or lname == "" or default_location == "":
         flash("Please fill out all items")
         return redirect("/createuser")
     if user:
         flash('User Already Exists, please log in.')
+        return redirect('/createuser')
     else:
         crud.create_user(email, password, fname, lname, default_location)
         session['email'] = email
@@ -167,7 +168,7 @@ def get_results():
             if location == None:
                 payload['location'] = default
                 
-        if session == {}:
+        if not session:
             if location == None:
                 return redirect("/criteria")
 
@@ -177,8 +178,9 @@ def get_results():
         for num in range(0, len(data['businesses'])):
             data['businesses'][num]['search_location'] = loc.title()
 
-        session['search'] = loc.title()
+        data['search'] = loc.title()
         data['database'] = 'no'
+        print(data['search'])
         return jsonify(data)
 
 
@@ -201,7 +203,7 @@ def post_rating():
     url = request.json.get('url')
     rating = float(request.json.get('rating'))
     dist = float(request.json.get('distance'))
-    search = session['search']
+    search = request.json.get('search')
     categories = request.json.get('categories')
     rest = crud.return_rest(name, phone)
     cat1 = ''
@@ -245,7 +247,7 @@ def overwrite_rating():
     url = request.json.get('url')
     rating = float(request.json.get('rating'))
     dist = float(request.json.get('distance'))
-    search = session['search']
+    search = request.json.get('search')
     categories = request.json.get('categories')
     rest = crud.return_rest(name, phone)
     cat1 = ''

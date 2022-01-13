@@ -1,15 +1,39 @@
+html, body {
+    margin:0;
+    padding:0;
+    
+    }
+.body {
+    margin: 0;
+    padding: 0px;
+
+    background-image: url('/static/Imgs/wallpaper.png');
+    background-size: cover;
+    background-repeat: repeat-y;
+    /* z-index: -1; */
+    width:100vw;
+    position: absolute;
+}
+
+
 #jk {
     margin:0px;
     padding:0px;
     background-color:#2F4858;
 }
+/* .container checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  } */
 
 .top {
     text-align: center;
     color: #daf7dc;
-    background-color: #2F4858;
     margin: 0px;
-    padding: 20px;
+    padding: 10px;
 }
 
 .input {
@@ -33,10 +57,11 @@
     text-align: center;
     color: #daf7dc;
     border-color: white;
-    padding-top: 15px;
+    padding: 15px;
     background: #2F4858;
+    filter:opacity(90%)
     /* border-radius: 10px;
-    box-sizing: border-box;      */
+    box-sizing: border-box;  */
 }
 
 .main-image {
@@ -85,6 +110,23 @@
     padding:0;
     border:0;
 }
+
+.criteria-pic {
+    text-align: center;
+    background-color: #2F4858;
+    background-image: url('/static/Imgs/criteria.jpg');
+    background-size: cover;
+    filter:grayscale(15%);
+    z-index: -1;
+    width:100vw;
+    height:125vh;
+    position: absolute;
+    /* filter: blur(1px); */
+    margin:0;
+    padding:0;
+    border:0;
+}
+
 .button-75 {
   align-items: center;
   background-image: linear-gradient(135deg, #2F4858 40%, #daf7dc);
@@ -95,7 +137,7 @@
   display: flex;
   flex-direction: column;
   font-family: "Codec cold",sans-serif;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   height: 54px;
   justify-content: center;
@@ -121,3 +163,163 @@
     color:#daf7dc;
     text-align: center;
 }
+
+#jinja {
+  font-family: "Codec cold",sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color:#daf7dc;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+#welcome {
+    font-size: 46px;
+}
+
+#criteria-intro {
+    padding-top: 0;
+    padding-bottom: 30px;
+}
+/* .checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: black;
+    border-radius: 50%;
+}
+.container input:checked ~ .checkbox {
+    background-color: black;
+  } */
+
+.center {
+    text-align: center;
+}
+
+#label {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.text {
+    font-family: "Codec cold",sans-serif;
+    font-weight: 500;
+    color: #daf7dc;
+    text-align: center;
+}
+
+#count {
+    font-size:36px;
+}
+
+#advice {
+    font-size:22px;
+}
+
+#option {
+    font-size: 26px;
+}
+.background {
+
+    background-image: url('/static/Imgs/wallpaper.png');
+    background-size: cover;
+    background-repeat: repeat-y;
+
+    z-index: -1;
+    width:100vw;
+    /* height:100vh; */
+    position: absolute;
+
+}
+
+#box2 {
+    background-image: url('/static/Imgs/black_linen_v2.png');
+    border: 3px solid;
+    border-color: #1e2a31;
+
+    
+}
+#name {
+    text-decoration: underline;
+    margin-bottom: 0px;
+}
+#sub {
+    font-size: 20px;
+    padding-top: 0px;
+}
+#rate {
+    font-size: 18px;
+}
+#response {
+    text-align:center;
+    font-size: 16px;
+
+} 
+.inline {
+    margin-right: 10px;
+    margin-left: 10px;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+******************************************************************************************
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #23b499;
+    font-family: 'Open Sans', sans-serif;
+    color: #fff;
+ }
+select {
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    -ms-appearance:none;
+    appearance:none;
+    outline:0;
+    box-shadow:none;
+    border:0!important;
+    background: #5c6664;
+    background-image: none;
+    flex: 1;
+    padding: 0 .5em;
+    color:#daf7dc;
+    cursor:pointer;
+    font-size: 1em;
+    font-family: 'Open Sans', sans-serif;
+    border-radius: 7px;
+    text-align: center;
+ }
+ select::-ms-expand {
+    display: none;
+ }
+ .select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #5c6664;
+    overflow: hidden;
+    border-radius: .25em;
+ }
+ .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #2b2e2e;
+    cursor:pointer;
+    pointer-events:none;
+    transition:.25s all ease;
+ }
+ .select:hover::after {
+    color: #23b499;
+ }

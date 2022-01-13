@@ -2,19 +2,26 @@
 {% extends 'base.html' %}
 
 {% block body %} 
-<div class="row">
-    <div >
+<div>
+    <div class="row">
         <h1 class="top">Welcome to Deliciously Indecisive!</h1>
     </div> 
-</div>
+
 <div class="row">
-    <div  >
-        <h3 class="top">
+    <div>
+        <h3 id="sub" class="top">
             The site built for people who love to eat out, 
             but hate thinking of where to go.
         </h3>
     </div>
 </div>
+</div>
+{% if session %}
+        <p id="jinja">
+            Welcome Back, {{session['fname']}}
+        </p>
+{% endif %}
+<br>
     <div class="main-image">
     </div>
     <div class="container">
@@ -26,17 +33,17 @@
             
             {% if not session %}
                 <div class="row input d-flex p-2 bd-highlight" id="buttons">
-                    <div id="login" class="col-lg-3  d-flex justify-content-center">
+                    <div id="login" class="d-flex justify-content-center">
                         <form action="/login" >
                             <button type="submit" class="button-75">Login Here!</button>
                         </form>
-                    </div>
-                    <div class="col-lg-3 d-flex justify-content-center">
+                        <div class="col-1"></div>
+                    
                         <form action="/createuser">
                             <button class="button-75" type="submit" >Create A Profile</button>
                         </form>
-                    </div>
-                    <div class="col-lg-3 d-flex justify-content-center">
+                   
+                        <div class="col-1"></div>
                         <form action="/criteria">
                             <button class="button-75" type="submit" >Continue as Guest</button>
                         </form>
@@ -47,12 +54,13 @@
 
         {% if session %}
             <div class="row input d-flex p-2 bd-highlight" id="buttons">
-                <div id="login" class="col-lg-6 d-flex justify-content-center">
+                <div id="login" class="d-flex justify-content-center">
                     <form action="/login">
                         <button class="button-75" type="submit" >Change Profiles</button>
                     </form>
                 </div>
-                <div class="col-lg-6 d-flex justify-content-center">
+                <div class="col-1"></div>
+                <div class="d-flex justify-content-center">
                     <form action="/criteria">
                         <button class="button-75" type="submit" >Start Search</button>
                     </form>

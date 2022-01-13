@@ -10,379 +10,378 @@
 {% endif %}
 
 <div id='base'>
-<div id='flash'></div>
-    {% if session %}
-    <p id="jinja">
-        Welcome, {{session['fname']}}
-    </p>
-    {% endif %}
-<h1 id='welcome'>
-    Welcome!
-</h1>
-<h2>Please enter what you'd like to search for, and include any additional criteria you'd like.</h2>
-<form >
-<div id="see">
+    <div id='flash'></div>
+        {% if session %}
+        <p id="jinja">
+            Good to see you {{session['fname']}}
+        </p>
+        {% endif %}
+    <h2 class="top" id="criteria-intro">Please enter what sounds good to you:</h2>
+
+
+
+
+
     
-        <label>Search For:</label>
-        <input type="text" name="search">
+    <div class="criteria-pic">
+    </div>
+        <br>
+        <form>
+            <div id="see" class="box col-4 offset-4">
+                    <label id="label">Search For: </label>
+                    <input type="text" name="search">
+            </div>
+            <div id="locate" class="box col-4 offset-4">
+                    <label id="label">Location: </label>
+                    <input type="text" name="location">
+            </div>
+            <div class="box col-4 offset-4">
+                <label id="label">Price Range: </label><br>
+                <input type="checkbox" name="$">
+                <label>$</label>
+                <input type="checkbox" name="$$">
+                <label>$$</label>
+                <input type="checkbox" name="$$$">
+                <label>$$$</label>
+                <input type="checkbox" name="$$$$">
+                <label>$$$$</label>
+            </div>
+            <div class="box col-4 offset-4">
+                <label id="label">Sort Results By: </label>
+                    <select name="sort_by">
+                        <option value="best_match">Best Match</option>
+                        <option value="rating">Ratings</option>
+                        <option value="review_count">Review Count</option>
+                        <option value="distance">Distance</option>
+                    </select>
+            </div>
+            <div class="box col-4 offset-4">
+                <label id="label">Open Now: </label>
+                <select name="open">
+                    <option value="False">Open and Closed</option>
+                    <option value="True">Open Only</option>
+                </select>  
+            </div>
+            <div class="box col-4 offset-4">
+                <label>Search Radius: </label>
+                    <select name="radius" id='radius'>
+                        <option value="40000">25 Miles</option>
+                        <option value="32000">20 Miles</option>
+                        <option value="24000">15 Miles</option>
+                        <option value="16000">10 Miles</option>
+                        <option value="8000">5 Miles</option>
+                    </select>
+            </div>
+
+        {% if session %}
+        <div class="box col-4 offset-4">
+            <input type='checkbox' name='database' id="database">
+            <label>Choose from previously rated restaurants</label>
+        </div>
+        <div class="box col-4 offset-4">
+            <label>Filter By:</label><br>
+            <select class="center" name="sort_by" id='cats'>
+                <option class="center" value='N/A'>---</option>
+                <option value='Acai Bowls'>Acai Bowls</option>
+                <option value='Afghan'>Afghan</option>
+                <option value='African'>African</option>
+                <option value='Andalusian'>Andalusian</option>
+                <option value='Arabic'>Arabic</option>
+                <option value='Argentine'>Argentine</option>
+                <option value='Armenian'>Armenian</option>
+                <option value='Asian Fusion'>Asian Fusion</option>
+                <option value='Asturian'>Asturian</option>
+                <option value='Australian'>Australian</option>
+                <option value='Austrian'>Austrian</option>
+                <option value='Backshop'>Backshop</option>
+                <option value='Bagels'>Bagels</option>
+                <option value='Baguettes'>Baguettes</option>
+                <option value='Bakeries'>Bakeries</option>
+                <option value='Bangladeshi'>Bangladeshi</option>
+                <option value='Basque'>Basque</option>
+                <option value='Bavarian'>Bavarian</option>
+                <option value='Barbeque'>Barbeque</option>
+                <option value='Beer, Wine & Spirits'>Beer, Wine & Spirits</option>
+                <option value='Beer Garden'>Beer Garden</option>
+                <option value='Beer Hall'>Beer Hall</option>
+                <option value='Beisl'>Beisl</option>
+                <option value='Belgian'>Belgian</option>
+                <option value='Bento'>Bento</option>
+                <option value='Beverage Store'>Beverage Store</option>
+                <option value='Bistros'>Bistros</option>
+                <option value='Black Sea'>Black Sea</option>
+                <option value='Brasseries'>Brasseries</option>
+                <option value='Brazilian'>Brazilian</option>
+                <option value='Breakfast & Brunch'>Breakfast & Brunch</option>
+                <option value='Breweries'>Breweries</option>
+                <option value='British'>British</option>
+                <option value='Bubble Tea'>Bubble Tea</option>
+                <option value='Buffets'>Buffets</option>
+                <option value='Bulgarian'>Bulgarian</option>
+                <option value='Burgers'>Burgers</option>
+                <option value='Burmese'>Burmese</option>
+                <option value='Butcher'>Butcher</option>
+                <option value='Cafes'>Cafes</option>
+                <option value='Cafeteria'>Cafeteria</option>
+                <option value='Cajun/Creole'>Cajun/Creole</option>
+                <option value='Patisserie/Cake Shop'>Patisserie/Cake Shop</option>
+                <option value='Cambodian'>Cambodian</option>
+                <option value='Canteen'>Canteen</option>
+                <option value='Caribbean'>Caribbean</option>
+                <option value='Catalan'>Catalan</option>
+                <option value='Cheesesteaks'>Cheesesteaks</option>
+                <option value='Chicken Wings'>Chicken Wings</option>
+                <option value='Chicken Shop'>Chicken Shop</option>
+                <option value='Chilean'>Chilean</option>
+                <option value='Chimney Cakes'>Chimney Cakes</option>
+                <option value='Chinese'>Chinese</option>
+                <option value='Churros'>Churros</option>
+                <option value='Cideries'>Cideries</option>
+                <option value='Coffee & Tea'>Coffee & Tea</option>
+                <option value='Coffee Roasteries'>Coffee Roasteries</option>
+                <option value='Coffee & Tea Supplies'>Coffee & Tea Supplies</option>
+                <option value='Comfort Food'>Comfort Food</option>
+                <option value='Convenience Stores'>Convenience Stores</option>
+                <option value='Corsican'>Corsican</option>
+                <option value='Creperies'>Creperies</option>
+                <option value='CSA'>CSA</option>
+                <option value='Cuban'>Cuban</option>
+                <option value='Cupcakes'>Cupcakes</option>
+                <option value='Curry Sausage'>Curry Sausage</option>
+                <option value='Custom Cakes'>Custom Cakes</option>
+                <option value='Cypriot'>Cypriot</option>
+                <option value='Czech'>Czech</option>
+                <option value='Czech/Slovakian'>Czech/Slovakian</option>
+                <option value='Danish'>Danish</option>
+                <option value='Delicatessen'>Delicatessen</option>
+                <option value='Delis'>Delis</option>
+                <option value='Desserts'>Desserts</option>
+                <option value='Diners'>Diners</option>
+                <option value='Dinner Theater'>Dinner Theater</option>
+                <option value='Distilleries'>Distilleries</option>
+                <option value='Do-It-Yourself Food'>Do-It-Yourself Food</option>
+                <option value='Donairs'>Donairs</option>
+                <option value='Donuts'>Donuts</option>
+                <option value='Dumplings'>Dumplings</option>
+                <option value='Eastern European'>Eastern European</option>
+                <option value='Parent Cafes'>Parent Cafes</option>
+                <option value='Empanadas'>Empanadas</option>
+                <option value='Eritrean'>Eritrean</option>
+                <option value='Ethical Grocery'>Ethical Grocery</option>
+                <option value='Ethiopian'>Ethiopian</option>
+                <option value='Farmers Market'>Farmers Market</option>
+                <option value='Filipino'>Filipino</option>
+                <option value='Fischbroetchen'>Fischbroetchen</option>
+                <option value='Fishmonger'>Fishmonger</option>
+                <option value='Fish & Chips'>Fish & Chips</option>
+                <option value='Flatbread'>Flatbread</option>
+                <option value='Fondue'>Fondue</option>
+                <option value='Food Court'>Food Court</option>
+                <option value='Food Delivery Services'>Food Delivery Services</option>
+                <option value='Food Stands'>Food Stands</option>
+                <option value='Food Trucks'>Food Trucks</option>
+                <option value='Freiduria'>Freiduria</option>
+                <option value='French'>French</option>
+                <option value='Friterie'>Friterie</option>
+                <option value='Galician'>Galician</option>
+                <option value='Game Meat'>Game Meat</option>
+                <option value='Gastropubs'>Gastropubs</option>
+                <option value='Gelato'>Gelato</option>
+                <option value='Georgian'>Georgian</option>
+                <option value='German'>German</option>
+                <option value='Giblets'>Giblets</option>
+                <option value='Mulled Wine'>Mulled Wine</option>
+                <option value='Gluten-Free'>Gluten-Free</option>
+                <option value='Specialty Food'>Specialty Food</option>
+                <option value='Greek'>Greek</option>
+                <option value='Grocery'>Grocery</option>
+                <option value='Guamanian'>Guamanian</option>
+                <option value='Halal'>Halal</option>
+                <option value='Hawaiian'>Hawaiian</option>
+                <option value='Hawker Centre'>Hawker Centre</option>
+                <option value='Heuriger'>Heuriger</option>
+                <option value='Himalayan/Nepalese'>Himalayan/Nepalese</option>
+                <option value='Hong Kong Style Cafe'>Hong Kong Style Cafe</option>
+                <option value='Honduran'>Honduran</option>
+                <option value='Honey'>Honey</option>
+                <option value='Hot Dogs'>Hot Dogs</option>
+                <option value='Fast Food'>Fast Food</option>
+                <option value='Hot Pot'>Hot Pot</option>
+                <option value='Hungarian'>Hungarian</option>
+                <option value='Iberian'>Iberian</option>
+                <option value='Ice Cream & Frozen Yogurt'>Ice Cream & Frozen Yogurt</option>
+                <option value='Imported Food'>Imported Food</option>
+                <option value='Indonesian'>Indonesian</option>
+                <option value='Indian'>Indian</option>
+                <option value='International'>International</option>
+                <option value='Internet Cafes'>Internet Cafes</option>
+                <option value='International Grocery'>International Grocery</option>
+                <option value='Irish'>Irish</option>
+                <option value='Island Pub'>Island Pub</option>
+                <option value='Israeli'>Israeli</option>
+                <option value='Italian'>Italian</option>
+                <option value='Japanese'>Japanese</option>
+                <option value='Jewish'>Jewish</option>
+                <option value='Japanese Sweets'>Japanese Sweets</option>
+                <option value='Juice Bars & Smoothies'>Juice Bars & Smoothies</option>
+                <option value='Kebab'>Kebab</option>
+                <option value='Kiosk'>Kiosk</option>
+                <option value='Kombucha'>Kombucha</option>
+                <option value='Kopitiam'>Kopitiam</option>
+                <option value='Korean'>Korean</option>
+                <option value='Kosher'>Kosher</option>
+                <option value='Kurdish'>Kurdish</option>
+                <option value='Laos'>Laos</option>
+                <option value='Laotian'>Laotian</option>
+                <option value='Latin American'>Latin American</option>
+                <option value='Lyonnais'>Lyonnais</option>
+                <option value='Malaysian'>Malaysian</option>
+                <option value='Meaderies'>Meaderies</option>
+                <option value='Meatballs'>Meatballs</option>
+                <option value='Mediterranean'>Mediterranean</option>
+                <option value='Mexican'>Mexican</option>
+                <option value='Middle Eastern'>Middle Eastern</option>
+                <option value='Milk Bars'>Milk Bars</option>
+                <option value='Milkshake Bars'>Milkshake Bars</option>
+                <option value='Modern Australian'>Modern Australian</option>
+                <option value='Modern European'>Modern European</option>
+                <option value='Mongolian'>Mongolian</option>
+                <option value='Moroccan'>Moroccan</option>
+                <option value='Nasi Lemak'>Nasi Lemak</option>
+                <option value='American (New)'>American (New)</option>
+                <option value='Canadian (New)'>Canadian (New)</option>
+                <option value='New Mexican Cuisine'>New Mexican Cuisine</option>
+                <option value='New Zealand'>New Zealand</option>
+                <option value='Nicaraguan'>Nicaraguan</option>
+                <option value='Night Food'>Night Food</option>
+                <option value='Nikkei'>Nikkei</option>
+                <option value='Noodles'>Noodles</option>
+                <option value='Norcinerie'>Norcinerie</option>
+                <option value='Traditional Norwegian'>Traditional Norwegian</option>
+                <option value='Open Sandwiches'>Open Sandwiches</option>
+                <option value='Organic Stores'>Organic Stores</option>
+                <option value='Oriental'>Oriental</option>
+                <option value='Pakistani'>Pakistani</option>
+                <option value='Pan Asian'>Pan Asian</option>
+                <option value='Panzerotti'>Panzerotti</option>
+                <option value='Parma'>Parma</option>
+                <option value='Persian/Iranian'>Persian/Iranian</option>
+                <option value='Peruvian'>Peruvian</option>
+                <option value='PF/Comercial'>PF/Comercial</option>
+                <option value='Piadina'>Piadina</option>
+                <option value='Pita'>Pita</option>
+                <option value='Pizza'>Pizza</option>
+                <option value='Poke'>Poke</option>
+                <option value='Polish'>Polish</option>
+                <option value='Polynesian'>Polynesian</option>
+                <option value='Pop-Up Restaurants'>Pop-Up Restaurants</option>
+                <option value='Portuguese'>Portuguese</option>
+                <option value='Potatoes'>Potatoes</option>
+                <option value='Poutineries'>Poutineries</option>
+                <option value='Pretzels'>Pretzels</option>
+                <option value='Pub Food'>Pub Food</option>
+                <option value='Live/Raw Food'>Live/Raw Food</option>
+                <option value='Rice'>Rice</option>
+                <option value='Romanian'>Romanian</option>
+                <option value='Rotisserie Chicken'>Rotisserie Chicken</option>
+                <option value='Russian'>Russian</option>
+                <option value='Salad'>Salad</option>
+                <option value='Salumerie'>Salumerie</option>
+                <option value='Sandwiches'>Sandwiches</option>
+                <option value='Scandinavian'>Scandinavian</option>
+                <option value='Schnitzel'>Schnitzel</option>
+                <option value='Scottish'>Scottish</option>
+                <option value='Seafood'>Seafood</option>
+                <option value='Serbo Croatian'>Serbo Croatian</option>
+                <option value='Shaved Ice'>Shaved Ice</option>
+                <option value='Shaved Snow'>Shaved Snow</option>
+                <option value='Signature Cuisine'>Signature Cuisine</option>
+                <option value='Singaporean'>Singaporean</option>
+                <option value='Slovakian'>Slovakian</option>
+                <option value='Smokehouse'>Smokehouse</option>
+                <option value='Somali'>Somali</option>
+                <option value='Soul Food'>Soul Food</option>
+                <option value='Soup'>Soup</option>
+                <option value='Southern'>Southern</option>
+                <option value='Spanish'>Spanish</option>
+                <option value='Sri Lankan'>Sri Lankan</option>
+                <option value='Steakhouses'>Steakhouses</option>
+                <option value='Street Vendors'>Street Vendors</option>
+                <option value='French Southwest'>French Southwest</option>
+                <option value='Sugar Shacks'>Sugar Shacks</option>
+                <option value='Supper Clubs'>Supper Clubs</option>
+                <option value='Sushi Bars'>Sushi Bars</option>
+                <option value='Swabian'>Swabian</option>
+                <option value='Swedish'>Swedish</option>
+                <option value='Swiss Food'>Swiss Food</option>
+                <option value='Syrian'>Syrian</option>
+                <option value='Tabernas'>Tabernas</option>
+                <option value='Taiwanese'>Taiwanese</option>
+                <option value='Tapas Bars'>Tapas Bars</option>
+                <option value='Tapas/Small Plates'>Tapas/Small Plates</option>
+                <option value='Tavola Calda'>Tavola Calda</option>
+                <option value='Tea Rooms'>Tea Rooms</option>
+                <option value='Tex-Mex'>Tex-Mex</option>
+                <option value='Thai'>Thai</option>
+                <option value='Torshi'>Torshi</option>
+                <option value='Tortillas'>Tortillas</option>
+                <option value='American (Traditional)'>American (Traditional)</option>
+                <option value='Traditional Swedish'>Traditional Swedish</option>
+                <option value='Trattorie'>Trattorie</option>
+                <option value='Turkish'>Turkish</option>
+                <option value='Ukrainian'>Ukrainian</option>
+                <option value='Uzbek'>Uzbek</option>
+                <option value='Vegan'>Vegan</option>
+                <option value='Vegetarian'>Vegetarian</option>
+                <option value='Venison'>Venison</option>
+                <option value='Vietnamese'>Vietnamese</option>
+                <option value='Waffles'>Waffles</option>
+                <option value='Water Stores'>Water Stores</option>
+                <option value='Wineries'>Wineries</option>
+                <option value='Wok'>Wok</option>
+                <option value='Wraps'>Wraps</option>
+                <option value='Yugoslav'>Yugoslav</option>
+                <option value='Zapiekanka'>Zapiekanka</option>
+            </select>
+        </div>
+        <div class="box col-4 offset-4">
+            <input class="checkmark" type="checkbox" name="1" checked>
+            <label>1 Star</label>
+            <input class="checkmark" type="checkbox" name="1.5" checked>
+            <label>1.5 Star</label>
+            <input class="checkmark" type="checkbox" name="2" checked>
+            <label>2 Star</label>
+            <input class="checkmark" type="checkbox" name="2.5" checked>
+            <label>2.5 Star</label>
+            <input class="checkmark" type="checkbox" name="3" checked>
+            <label>3 Star</label>
+            <br>
+            <input class="checkmark" type="checkbox" name="3.5" checked>
+            <label>3.5 Star</label>
+            <input class="checkmark" type="checkbox" name="4" checked>
+            <label>4 Star</label>
+            <input class="checkmark" type="checkbox" name="4.5" checked>
+            <label>4.5 Star</label>
+            <input class="checkmark" type="checkbox" name="5" checked>
+            <label>5 Star</label>
+        </div>
+
+        {% endif %}
+        <div class="row d-flex p-2 bd-highlight">
+            <div class="col-12 d-flex justify-content-center">
+                <button type="submit" id="search_now" class="button-75">Submit Search</button>
+            </div>
+        </div>
+    </form>
+        <div id="response"></div>
+        <div id="rate">
+        </div>
     
-</div>
-<br>
-<div id="locate">
-    
-        <label>Location:</label>
-        <input type="text" name="location">
-        <label>required***</label>
-    
-</div>
-<br>
-<div>
-    <label>Price Range:</label><br>
-    <input type="checkbox" name="$">
-    <label>$</label>
-    <input type="checkbox" name="$$">
-    <label>$$</label>
-    <input type="checkbox" name="$$$">
-    <label>$$$</label>
-    <input type="checkbox" name="$$$$">
-    <label>$$$$</label>
-</div>
-
-<br>
-<div>
-    <label>Sort Results By:</label>
-        <select name="sort_by">
-            <option value="best_match">Best Match</option>
-            <option value="rating">Ratings</option>
-            <option value="review_count">Review Count</option>
-            <option value="distance">Distance</option>
-        </select>
-</div>
-<br>
-<div>
-    <label>Open Now:</label>
-    <select name="open">
-        <option value="False">Open and Closed</option>
-        <option value="True">Open Only</option>
-    </select>  
-</div>
-<br>
-<div>
-    <label>Search Radius:</label>
-        <select name="radius" id='radius'>
-            <option value="40000">25 Miles</option>
-            <option value="32000">20 Miles</option>
-            <option value="24000">15 Miles</option>
-            <option value="16000">10 Miles</option>
-            <option value="8000">5 Miles</option>
-        </select>
-</div>
-<br>
+        <br>
 
 
-{% if session %}
-<div>
-    <input type='checkbox' name='database' id="database">
-    <label>Choose from all previously rated restaurants</label>
-</div>
-<div>
-    What Catergory would you like to filter your rated restaurants by?
-    <select name="sort_by" id='cats'>
-        <option value='N/A'>---</option>
-        <option value='Acai Bowls'>Acai Bowls</option>
-        <option value='Afghan'>Afghan</option>
-        <option value='African'>African</option>
-        <option value='Andalusian'>Andalusian</option>
-        <option value='Arabic'>Arabic</option>
-        <option value='Argentine'>Argentine</option>
-        <option value='Armenian'>Armenian</option>
-        <option value='Asian Fusion'>Asian Fusion</option>
-        <option value='Asturian'>Asturian</option>
-        <option value='Australian'>Australian</option>
-        <option value='Austrian'>Austrian</option>
-        <option value='Backshop'>Backshop</option>
-        <option value='Bagels'>Bagels</option>
-        <option value='Baguettes'>Baguettes</option>
-        <option value='Bakeries'>Bakeries</option>
-        <option value='Bangladeshi'>Bangladeshi</option>
-        <option value='Basque'>Basque</option>
-        <option value='Bavarian'>Bavarian</option>
-        <option value='Barbeque'>Barbeque</option>
-        <option value='Beer, Wine & Spirits'>Beer, Wine & Spirits</option>
-        <option value='Beer Garden'>Beer Garden</option>
-        <option value='Beer Hall'>Beer Hall</option>
-        <option value='Beisl'>Beisl</option>
-        <option value='Belgian'>Belgian</option>
-        <option value='Bento'>Bento</option>
-        <option value='Beverage Store'>Beverage Store</option>
-        <option value='Bistros'>Bistros</option>
-        <option value='Black Sea'>Black Sea</option>
-        <option value='Brasseries'>Brasseries</option>
-        <option value='Brazilian'>Brazilian</option>
-        <option value='Breakfast & Brunch'>Breakfast & Brunch</option>
-        <option value='Breweries'>Breweries</option>
-        <option value='British'>British</option>
-        <option value='Bubble Tea'>Bubble Tea</option>
-        <option value='Buffets'>Buffets</option>
-        <option value='Bulgarian'>Bulgarian</option>
-        <option value='Burgers'>Burgers</option>
-        <option value='Burmese'>Burmese</option>
-        <option value='Butcher'>Butcher</option>
-        <option value='Cafes'>Cafes</option>
-        <option value='Cafeteria'>Cafeteria</option>
-        <option value='Cajun/Creole'>Cajun/Creole</option>
-        <option value='Patisserie/Cake Shop'>Patisserie/Cake Shop</option>
-        <option value='Cambodian'>Cambodian</option>
-        <option value='Canteen'>Canteen</option>
-        <option value='Caribbean'>Caribbean</option>
-        <option value='Catalan'>Catalan</option>
-        <option value='Cheesesteaks'>Cheesesteaks</option>
-        <option value='Chicken Wings'>Chicken Wings</option>
-        <option value='Chicken Shop'>Chicken Shop</option>
-        <option value='Chilean'>Chilean</option>
-        <option value='Chimney Cakes'>Chimney Cakes</option>
-        <option value='Chinese'>Chinese</option>
-        <option value='Churros'>Churros</option>
-        <option value='Cideries'>Cideries</option>
-        <option value='Coffee & Tea'>Coffee & Tea</option>
-        <option value='Coffee Roasteries'>Coffee Roasteries</option>
-        <option value='Coffee & Tea Supplies'>Coffee & Tea Supplies</option>
-        <option value='Comfort Food'>Comfort Food</option>
-        <option value='Convenience Stores'>Convenience Stores</option>
-        <option value='Corsican'>Corsican</option>
-        <option value='Creperies'>Creperies</option>
-        <option value='CSA'>CSA</option>
-        <option value='Cuban'>Cuban</option>
-        <option value='Cupcakes'>Cupcakes</option>
-        <option value='Curry Sausage'>Curry Sausage</option>
-        <option value='Custom Cakes'>Custom Cakes</option>
-        <option value='Cypriot'>Cypriot</option>
-        <option value='Czech'>Czech</option>
-        <option value='Czech/Slovakian'>Czech/Slovakian</option>
-        <option value='Danish'>Danish</option>
-        <option value='Delicatessen'>Delicatessen</option>
-        <option value='Delis'>Delis</option>
-        <option value='Desserts'>Desserts</option>
-        <option value='Diners'>Diners</option>
-        <option value='Dinner Theater'>Dinner Theater</option>
-        <option value='Distilleries'>Distilleries</option>
-        <option value='Do-It-Yourself Food'>Do-It-Yourself Food</option>
-        <option value='Donairs'>Donairs</option>
-        <option value='Donuts'>Donuts</option>
-        <option value='Dumplings'>Dumplings</option>
-        <option value='Eastern European'>Eastern European</option>
-        <option value='Parent Cafes'>Parent Cafes</option>
-        <option value='Empanadas'>Empanadas</option>
-        <option value='Eritrean'>Eritrean</option>
-        <option value='Ethical Grocery'>Ethical Grocery</option>
-        <option value='Ethiopian'>Ethiopian</option>
-        <option value='Farmers Market'>Farmers Market</option>
-        <option value='Filipino'>Filipino</option>
-        <option value='Fischbroetchen'>Fischbroetchen</option>
-        <option value='Fishmonger'>Fishmonger</option>
-        <option value='Fish & Chips'>Fish & Chips</option>
-        <option value='Flatbread'>Flatbread</option>
-        <option value='Fondue'>Fondue</option>
-        <option value='Food Court'>Food Court</option>
-        <option value='Food Delivery Services'>Food Delivery Services</option>
-        <option value='Food Stands'>Food Stands</option>
-        <option value='Food Trucks'>Food Trucks</option>
-        <option value='Freiduria'>Freiduria</option>
-        <option value='French'>French</option>
-        <option value='Friterie'>Friterie</option>
-        <option value='Galician'>Galician</option>
-        <option value='Game Meat'>Game Meat</option>
-        <option value='Gastropubs'>Gastropubs</option>
-        <option value='Gelato'>Gelato</option>
-        <option value='Georgian'>Georgian</option>
-        <option value='German'>German</option>
-        <option value='Giblets'>Giblets</option>
-        <option value='Mulled Wine'>Mulled Wine</option>
-        <option value='Gluten-Free'>Gluten-Free</option>
-        <option value='Specialty Food'>Specialty Food</option>
-        <option value='Greek'>Greek</option>
-        <option value='Grocery'>Grocery</option>
-        <option value='Guamanian'>Guamanian</option>
-        <option value='Halal'>Halal</option>
-        <option value='Hawaiian'>Hawaiian</option>
-        <option value='Hawker Centre'>Hawker Centre</option>
-        <option value='Heuriger'>Heuriger</option>
-        <option value='Himalayan/Nepalese'>Himalayan/Nepalese</option>
-        <option value='Hong Kong Style Cafe'>Hong Kong Style Cafe</option>
-        <option value='Honduran'>Honduran</option>
-        <option value='Honey'>Honey</option>
-        <option value='Hot Dogs'>Hot Dogs</option>
-        <option value='Fast Food'>Fast Food</option>
-        <option value='Hot Pot'>Hot Pot</option>
-        <option value='Hungarian'>Hungarian</option>
-        <option value='Iberian'>Iberian</option>
-        <option value='Ice Cream & Frozen Yogurt'>Ice Cream & Frozen Yogurt</option>
-        <option value='Imported Food'>Imported Food</option>
-        <option value='Indonesian'>Indonesian</option>
-        <option value='Indian'>Indian</option>
-        <option value='International'>International</option>
-        <option value='Internet Cafes'>Internet Cafes</option>
-        <option value='International Grocery'>International Grocery</option>
-        <option value='Irish'>Irish</option>
-        <option value='Island Pub'>Island Pub</option>
-        <option value='Israeli'>Israeli</option>
-        <option value='Italian'>Italian</option>
-        <option value='Japanese'>Japanese</option>
-        <option value='Jewish'>Jewish</option>
-        <option value='Japanese Sweets'>Japanese Sweets</option>
-        <option value='Juice Bars & Smoothies'>Juice Bars & Smoothies</option>
-        <option value='Kebab'>Kebab</option>
-        <option value='Kiosk'>Kiosk</option>
-        <option value='Kombucha'>Kombucha</option>
-        <option value='Kopitiam'>Kopitiam</option>
-        <option value='Korean'>Korean</option>
-        <option value='Kosher'>Kosher</option>
-        <option value='Kurdish'>Kurdish</option>
-        <option value='Laos'>Laos</option>
-        <option value='Laotian'>Laotian</option>
-        <option value='Latin American'>Latin American</option>
-        <option value='Lyonnais'>Lyonnais</option>
-        <option value='Malaysian'>Malaysian</option>
-        <option value='Meaderies'>Meaderies</option>
-        <option value='Meatballs'>Meatballs</option>
-        <option value='Mediterranean'>Mediterranean</option>
-        <option value='Mexican'>Mexican</option>
-        <option value='Middle Eastern'>Middle Eastern</option>
-        <option value='Milk Bars'>Milk Bars</option>
-        <option value='Milkshake Bars'>Milkshake Bars</option>
-        <option value='Modern Australian'>Modern Australian</option>
-        <option value='Modern European'>Modern European</option>
-        <option value='Mongolian'>Mongolian</option>
-        <option value='Moroccan'>Moroccan</option>
-        <option value='Nasi Lemak'>Nasi Lemak</option>
-        <option value='American (New)'>American (New)</option>
-        <option value='Canadian (New)'>Canadian (New)</option>
-        <option value='New Mexican Cuisine'>New Mexican Cuisine</option>
-        <option value='New Zealand'>New Zealand</option>
-        <option value='Nicaraguan'>Nicaraguan</option>
-        <option value='Night Food'>Night Food</option>
-        <option value='Nikkei'>Nikkei</option>
-        <option value='Noodles'>Noodles</option>
-        <option value='Norcinerie'>Norcinerie</option>
-        <option value='Traditional Norwegian'>Traditional Norwegian</option>
-        <option value='Open Sandwiches'>Open Sandwiches</option>
-        <option value='Organic Stores'>Organic Stores</option>
-        <option value='Oriental'>Oriental</option>
-        <option value='Pakistani'>Pakistani</option>
-        <option value='Pan Asian'>Pan Asian</option>
-        <option value='Panzerotti'>Panzerotti</option>
-        <option value='Parma'>Parma</option>
-        <option value='Persian/Iranian'>Persian/Iranian</option>
-        <option value='Peruvian'>Peruvian</option>
-        <option value='PF/Comercial'>PF/Comercial</option>
-        <option value='Piadina'>Piadina</option>
-        <option value='Pita'>Pita</option>
-        <option value='Pizza'>Pizza</option>
-        <option value='Poke'>Poke</option>
-        <option value='Polish'>Polish</option>
-        <option value='Polynesian'>Polynesian</option>
-        <option value='Pop-Up Restaurants'>Pop-Up Restaurants</option>
-        <option value='Portuguese'>Portuguese</option>
-        <option value='Potatoes'>Potatoes</option>
-        <option value='Poutineries'>Poutineries</option>
-        <option value='Pretzels'>Pretzels</option>
-        <option value='Pub Food'>Pub Food</option>
-        <option value='Live/Raw Food'>Live/Raw Food</option>
-        <option value='Rice'>Rice</option>
-        <option value='Romanian'>Romanian</option>
-        <option value='Rotisserie Chicken'>Rotisserie Chicken</option>
-        <option value='Russian'>Russian</option>
-        <option value='Salad'>Salad</option>
-        <option value='Salumerie'>Salumerie</option>
-        <option value='Sandwiches'>Sandwiches</option>
-        <option value='Scandinavian'>Scandinavian</option>
-        <option value='Schnitzel'>Schnitzel</option>
-        <option value='Scottish'>Scottish</option>
-        <option value='Seafood'>Seafood</option>
-        <option value='Serbo Croatian'>Serbo Croatian</option>
-        <option value='Shaved Ice'>Shaved Ice</option>
-        <option value='Shaved Snow'>Shaved Snow</option>
-        <option value='Signature Cuisine'>Signature Cuisine</option>
-        <option value='Singaporean'>Singaporean</option>
-        <option value='Slovakian'>Slovakian</option>
-        <option value='Smokehouse'>Smokehouse</option>
-        <option value='Somali'>Somali</option>
-        <option value='Soul Food'>Soul Food</option>
-        <option value='Soup'>Soup</option>
-        <option value='Southern'>Southern</option>
-        <option value='Spanish'>Spanish</option>
-        <option value='Sri Lankan'>Sri Lankan</option>
-        <option value='Steakhouses'>Steakhouses</option>
-        <option value='Street Vendors'>Street Vendors</option>
-        <option value='French Southwest'>French Southwest</option>
-        <option value='Sugar Shacks'>Sugar Shacks</option>
-        <option value='Supper Clubs'>Supper Clubs</option>
-        <option value='Sushi Bars'>Sushi Bars</option>
-        <option value='Swabian'>Swabian</option>
-        <option value='Swedish'>Swedish</option>
-        <option value='Swiss Food'>Swiss Food</option>
-        <option value='Syrian'>Syrian</option>
-        <option value='Tabernas'>Tabernas</option>
-        <option value='Taiwanese'>Taiwanese</option>
-        <option value='Tapas Bars'>Tapas Bars</option>
-        <option value='Tapas/Small Plates'>Tapas/Small Plates</option>
-        <option value='Tavola Calda'>Tavola Calda</option>
-        <option value='Tea Rooms'>Tea Rooms</option>
-        <option value='Tex-Mex'>Tex-Mex</option>
-        <option value='Thai'>Thai</option>
-        <option value='Torshi'>Torshi</option>
-        <option value='Tortillas'>Tortillas</option>
-        <option value='American (Traditional)'>American (Traditional)</option>
-        <option value='Traditional Swedish'>Traditional Swedish</option>
-        <option value='Trattorie'>Trattorie</option>
-        <option value='Turkish'>Turkish</option>
-        <option value='Ukrainian'>Ukrainian</option>
-        <option value='Uzbek'>Uzbek</option>
-        <option value='Vegan'>Vegan</option>
-        <option value='Vegetarian'>Vegetarian</option>
-        <option value='Venison'>Venison</option>
-        <option value='Vietnamese'>Vietnamese</option>
-        <option value='Waffles'>Waffles</option>
-        <option value='Water Stores'>Water Stores</option>
-        <option value='Wineries'>Wineries</option>
-        <option value='Wok'>Wok</option>
-        <option value='Wraps'>Wraps</option>
-        <option value='Yugoslav'>Yugoslav</option>
-        <option value='Zapiekanka'>Zapiekanka</option>
-    </select>
 
 </div>
-<div>
-    <label>Include Ratings of:</label>
-    <input type="checkbox" name="1" checked>
-    <label>1 Star</label>
-    <input type="checkbox" name="1.5" checked>
-    <label>1.5 Star</label>
-    <input type="checkbox" name="2" checked>
-    <label>2 Star</label>
-    <input type="checkbox" name="2.5" checked>
-    <label>2.5 Star</label>
-    <input type="checkbox" name="3" checked>
-    <label>3 Star</label>
-    <input type="checkbox" name="3.5" checked>
-    <label>3.5 Star</label>
-    <input type="checkbox" name="4" checked>
-    <label>4 Star</label>
-    <input type="checkbox" name="4.5" checked>
-    <label>4.5 Star</label>
-    <input type="checkbox" name="5" checked>
-    <label>5 Star</label>
-</div>
 
-{% endif %}
-<div>
-    <input type="submit" id="search_now">
-</div></form>
-
-</div>
-<div id="response"></div>
-<div id="rate">
-</div>
-<!-- <script src="static/food.js"></script> -->
 <script src="static/tier1.jsx" type="text/jsx"></script>
 {% endblock %}
