@@ -44,7 +44,6 @@ def login():
 
 
 
-
 @app.route("/createuser")
 def create_user1():
     """create user and log them in"""
